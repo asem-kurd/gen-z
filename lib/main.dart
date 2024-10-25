@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gen_z/screens/profile_screen.dart';
+import 'package:gen_z/screens/organization_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -10,6 +10,6 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return const ProfileScreen();
+    return const OrganizationScreen();
   }
 }
