@@ -74,7 +74,6 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   const SizedBox(
                       height: 50), // Added space before the next section
-
                   // Location and Points
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -154,7 +153,8 @@ class ProfileScreen extends StatelessWidget {
                   ),
 
                   const SizedBox(height: 50), // Space before the card section
-                  Text("Completed Activity", style: TextStyle(fontSize: 30)),
+                  const Text("Completed Activity",
+                      style: TextStyle(fontSize: 30)),
                   const SizedBox(height: 50), // Space before the card section
 
                   // Horizontally Scrollable Cards
