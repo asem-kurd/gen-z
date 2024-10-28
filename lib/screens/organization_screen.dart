@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gen_z/models/app_bar.dart';
+import 'package:gen_z/models/bottom_app_bar.dart';
 
 class OrganizationScreen extends StatelessWidget {
   const OrganizationScreen({super.key});
@@ -12,29 +14,7 @@ class OrganizationScreen extends StatelessWidget {
       home: SafeArea(
         child: Scaffold(
           extendBodyBehindAppBar: true,
-          appBar: AppBar(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            toolbarHeight: screenHeight * 0.09, // Responsive toolbar height
-            leading: IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.menu,
-                size: 40,
-              ),
-              tooltip: 'Open Menu',
-            ),
-            actions: [
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.language,
-                  size: 40,
-                ),
-                tooltip: 'Change Language',
-              ),
-            ],
-          ),
+          appBar: CustomAppBar(toolbarHeight: screenHeight * 0.09),
           // ignore: prefer_const_constructors
           body: Container(
             decoration: const BoxDecoration(
@@ -72,21 +52,24 @@ class OrganizationScreen extends StatelessWidget {
                               Padding(
                                 padding: EdgeInsets.all(15.0),
                                 child: CircleAvatar(
-                                  radius: 60, // Keep the avatar size fixed
+                                  radius: 46, // Keep the avatar size fixed
                                   backgroundImage:
                                       AssetImage("assets/imgs/logo.png"),
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsets.symmetric(vertical: 5),
+                                padding: EdgeInsets.only(top: 20, bottom: 20),
                                 child: Column(
                                   children: [
                                     Text(
                                       "Organization Name",
-                                      style: TextStyle(fontSize: 25),
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
                                     ),
                                     Padding(
-                                        padding: EdgeInsets.only(bottom: 15)),
+                                      padding: EdgeInsets.only(bottom: 8),
+                                    ),
                                     Row(
                                       children: [
                                         Icon(Icons.info_outline),
@@ -134,21 +117,24 @@ class OrganizationScreen extends StatelessWidget {
                               Padding(
                                 padding: EdgeInsets.all(15.0),
                                 child: CircleAvatar(
-                                  radius: 60, // Keep the avatar size fixed
+                                  radius: 46, // Keep the avatar size fixed
                                   backgroundImage:
                                       AssetImage("assets/imgs/logo.png"),
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsets.symmetric(vertical: 5),
+                                padding: EdgeInsets.only(top: 20, bottom: 20),
                                 child: Column(
                                   children: [
                                     Text(
                                       "Organization Name",
-                                      style: TextStyle(fontSize: 25),
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
                                     ),
                                     Padding(
-                                        padding: EdgeInsets.only(bottom: 15)),
+                                      padding: EdgeInsets.only(bottom: 8),
+                                    ),
                                     Row(
                                       children: [
                                         Icon(Icons.info_outline),
@@ -196,21 +182,24 @@ class OrganizationScreen extends StatelessWidget {
                               Padding(
                                 padding: EdgeInsets.all(15.0),
                                 child: CircleAvatar(
-                                  radius: 60, // Keep the avatar size fixed
+                                  radius: 46, // Keep the avatar size fixed
                                   backgroundImage:
                                       AssetImage("assets/imgs/logo.png"),
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsets.symmetric(vertical: 5),
+                                padding: EdgeInsets.only(top: 20, bottom: 20),
                                 child: Column(
                                   children: [
                                     Text(
                                       "Organization Name",
-                                      style: TextStyle(fontSize: 25),
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
                                     ),
                                     Padding(
-                                        padding: EdgeInsets.only(bottom: 15)),
+                                      padding: EdgeInsets.only(bottom: 8),
+                                    ),
                                     Row(
                                       children: [
                                         Icon(Icons.info_outline),
@@ -258,21 +247,24 @@ class OrganizationScreen extends StatelessWidget {
                               Padding(
                                 padding: EdgeInsets.all(15.0),
                                 child: CircleAvatar(
-                                  radius: 60, // Keep the avatar size fixed
+                                  radius: 46, // Keep the avatar size fixed
                                   backgroundImage:
                                       AssetImage("assets/imgs/logo.png"),
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsets.symmetric(vertical: 5),
+                                padding: EdgeInsets.only(top: 20, bottom: 20),
                                 child: Column(
                                   children: [
                                     Text(
                                       "Organization Name",
-                                      style: TextStyle(fontSize: 25),
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
                                     ),
                                     Padding(
-                                        padding: EdgeInsets.only(bottom: 15)),
+                                      padding: EdgeInsets.only(bottom: 8),
+                                    ),
                                     Row(
                                       children: [
                                         Icon(Icons.info_outline),
@@ -320,21 +312,24 @@ class OrganizationScreen extends StatelessWidget {
                               Padding(
                                 padding: EdgeInsets.all(15.0),
                                 child: CircleAvatar(
-                                  radius: 60, // Keep the avatar size fixed
+                                  radius: 46, // Keep the avatar size fixed
                                   backgroundImage:
                                       AssetImage("assets/imgs/logo.png"),
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsets.symmetric(vertical: 5),
+                                padding: EdgeInsets.only(top: 20, bottom: 20),
                                 child: Column(
                                   children: [
                                     Text(
                                       "Organization Name",
-                                      style: TextStyle(fontSize: 25),
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
                                     ),
                                     Padding(
-                                        padding: EdgeInsets.only(bottom: 15)),
+                                      padding: EdgeInsets.only(bottom: 8),
+                                    ),
                                     Row(
                                       children: [
                                         Icon(Icons.info_outline),
@@ -374,48 +369,7 @@ class OrganizationScreen extends StatelessWidget {
               ],
             ),
           ),
-          bottomNavigationBar: BottomAppBar(
-            color: const Color(0xffEBE9F2), // Background color for the footer
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  // Home button or other icons can go here
-                  IconButton(
-                    icon: const Icon(
-                      Icons.home_outlined,
-                      size: 30,
-                      color: Color(0xff5A5D62),
-                    ),
-                    onPressed: () {
-                      // Navigate to home screen or other action
-                    },
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.event, color: Color(0xff5A5D62)),
-                    onPressed: () {
-                      // Navigate to home screen or other action
-                    },
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.build_outlined,
-                        color: Color(0xff5A5D62)),
-                    onPressed: () {
-                      // Navigate to home screen or other action
-                    },
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.person_2_outlined,
-                        color: Color(0xff5A5D62)),
-                    onPressed: () {
-                      // Navigate to home screen or other action
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ),
+          bottomNavigationBar: const CustomBottomAppBar(),
         ),
       ),
     );

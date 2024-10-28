@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gen_z/models/app_bar.dart';
+import 'package:gen_z/models/bottom_app_bar.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -13,27 +15,7 @@ class ProfileScreen extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: SafeArea(
         child: Scaffold(
-          appBar: AppBar(
-            toolbarHeight: screenHeight * 0.12, // Responsive toolbar height
-            leading: IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.menu,
-                size: 40,
-              ),
-              tooltip: 'Open Menu',
-            ),
-            actions: [
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.language,
-                  size: 40,
-                ),
-                tooltip: 'Change Language',
-              ),
-            ],
-          ),
+          appBar: CustomAppBar(toolbarHeight: screenHeight * 0.09),
           body: ListView(
             padding: const EdgeInsets.all(16), // Consistent padding
             children: [
@@ -209,45 +191,7 @@ class ProfileScreen extends StatelessWidget {
             ],
           ),
           // Footer Section
-          bottomNavigationBar: BottomAppBar(
-            color: const Color(0xffEBE9F2), // Background color for the footer
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  // Home button or other icons can go here
-                  IconButton(
-                    icon: const Icon(Icons.home_outlined,
-                        size: 30, color: Color(0xff5A5D62)),
-                    onPressed: () {
-                      // Navigate to home screen or other action
-                    },
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.event, color: Color(0xff5A5D62)),
-                    onPressed: () {
-                      // Navigate to home screen or other action
-                    },
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.build_outlined,
-                        color: Color(0xff5A5D62)),
-                    onPressed: () {
-                      // Navigate to home screen or other action
-                    },
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.person_2_outlined,
-                        color: Color(0xff5A5D62)),
-                    onPressed: () {
-                      // Navigate to home screen or other action
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ),
+          bottomNavigationBar: const CustomBottomAppBar(),
         ),
       ),
     );
