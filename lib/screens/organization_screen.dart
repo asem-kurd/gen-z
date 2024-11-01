@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gen_z/models/app_bar.dart';
+import 'package:gen_z/models/app_bar1.dart';
+// import 'package:gen_z/models/app_bar2.dart';
 import 'package:gen_z/models/bottom_app_bar.dart';
 
 class OrganizationScreen extends StatelessWidget {
@@ -14,7 +15,7 @@ class OrganizationScreen extends StatelessWidget {
       home: SafeArea(
         child: Scaffold(
           extendBodyBehindAppBar: true,
-          appBar: CustomAppBar(toolbarHeight: screenHeight * 0.09),
+          appBar: CustomAppBar1(toolbarHeight: screenHeight * 0.09),
           // ignore: prefer_const_constructors
           body: Container(
             decoration: const BoxDecoration(

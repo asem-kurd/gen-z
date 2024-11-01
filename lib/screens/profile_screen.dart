@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gen_z/models/app_bar.dart';
+import 'package:gen_z/models/app_bar1.dart';
+// import 'package:gen_z/models/app_bar1.dart';
 import 'package:gen_z/models/bottom_app_bar.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -15,7 +16,7 @@ class ProfileScreen extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: SafeArea(
         child: Scaffold(
-          appBar: CustomAppBar(toolbarHeight: screenHeight * 0.09),
+          appBar: CustomAppBar1(toolbarHeight: screenHeight * 0.09),
           body: ListView(
             padding: const EdgeInsets.all(16), // Consistent padding
             children: [

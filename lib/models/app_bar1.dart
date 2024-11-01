@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+class CustomAppBar1 extends StatelessWidget implements PreferredSizeWidget {
   final double toolbarHeight;
 
-  const CustomAppBar({Key? key, required this.toolbarHeight}) : super(key: key);
+  const CustomAppBar1({super.key, required this.toolbarHeight});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +15,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         onPressed: () {},
         icon: const Icon(
           Icons.menu,
-          size: 40,
+          size: 30,
         ),
         tooltip: 'Open Menu',
       ),
@@ -24,7 +24,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           onPressed: () {},
           icon: const Icon(
             Icons.language,
-            size: 40,
+            size: 30,
           ),
           tooltip: 'Change Language',
         ),
