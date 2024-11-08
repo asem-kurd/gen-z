@@ -18,21 +18,27 @@ class CustomAppBar2 extends StatelessWidget implements PreferredSizeWidget {
             size: 30,
           ),
           tooltip: 'Open Menu',
+          color: const Color(0xff65625E),
         ),
-        title: const Text("GEN-Z"),
+        title: const Text(
+          "GEN-Z",
+          style: TextStyle(
+            color: Color(0xff65625E),
+          ),
+        ),
         actions: [
           IconButton(
             onPressed: () {},
             icon: const Icon(
               Icons.equalizer_rounded,
               size: 30,
-              color: Colors.black,
+              color: Color(0xff65625E),
             ),
             tooltip: 'Filteration',
           ),
         ],
         flexibleSpace: const Padding(
-          padding: EdgeInsets.only(top: 60),
+          padding: EdgeInsets.only(top: 90),
           child: Divider(
             height: 50,
             thickness: 2,

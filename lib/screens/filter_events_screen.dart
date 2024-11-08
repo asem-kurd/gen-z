@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gen_z/models/app_bar2.dart';
+import 'package:gen_z/models/bottom_app_bar.dart';
+import 'package:gen_z/models/btns_set.dart';
+import 'package:gen_z/widgets/event_image_stack.dart';
 
 class FilterEventsScreen extends StatelessWidget {
   const FilterEventsScreen({super.key});
@@ -14,192 +17,57 @@ class FilterEventsScreen extends StatelessWidget {
         body: Column(
           children: [
             const Padding(
-              padding: EdgeInsets.only(top: 130, left: 30, bottom: 50),
-              child: Text(
-                "Filter Events",
-                style: TextStyle(color: Color(0xff676259), fontSize: 25),
+              padding: EdgeInsets.only(top: 130, left: 30, bottom: 30),
+              // to make the text on the left:
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  "Filter Events",
+                  style: TextStyle(
+                      color: Color(0xff65625E),
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold),
+                ),
               ),
             ),
-            Column(
-              children: [
-                Row(
-                  children: [
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xff5A5D62),
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        minimumSize: const Size(
-                            200 * 0.5, 300 * 0.06), // Dynamic button size
-                      ),
-                      onPressed: () {
-                        // Add action for volunteering
-                      },
-                      child: const Text("Volunteer"),
-                    ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xff5A5D62),
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        minimumSize: const Size(
-                            200 * 0.5, 300 * 0.06), // Dynamic button size
-                      ),
-                      onPressed: () {
-                        // Add action for volunteering
-                      },
-                      child: const Text("Volunteer"),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xff5A5D62),
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        minimumSize: const Size(
-                            200 * 0.5, 300 * 0.06), // Dynamic button size
-                      ),
-                      onPressed: () {
-                        // Add action for volunteering
-                      },
-                      child: const Text("Volunteer"),
-                    ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xff5A5D62),
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        minimumSize: const Size(
-                            200 * 0.5, 300 * 0.06), // Dynamic button size
-                      ),
-                      onPressed: () {
-                        // Add action for volunteering
-                      },
-                      child: const Text("Volunteer"),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xff5A5D62),
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        minimumSize: const Size(
-                            200 * 0.5, 300 * 0.06), // Dynamic button size
-                      ),
-                      onPressed: () {
-                        // Add action for volunteering
-                      },
-                      child: const Text("Volunteer"),
-                    ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xff5A5D62),
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        minimumSize: const Size(
-                            200 * 0.5, 300 * 0.06), // Dynamic button size
-                      ),
-                      onPressed: () {
-                        // Add action for volunteering
-                      },
-                      child: const Text("Volunteer"),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            const Padding(
-              padding: EdgeInsets.only(top: 50, left: 10, bottom: 50),
-              child: Text(
-                "#News",
-                style: TextStyle(color: Color(0xff676259), fontSize: 25),
-              ),
-            ),
-            Expanded(
-              child: ListView(
-                scrollDirection: Axis.horizontal,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Column(
                 children: [
-                  const Padding(padding: EdgeInsets.only(right: 30)),
-                  Stack(
-                    children: [
-                      Container(
-                        alignment: Alignment.topLeft,
-                        child: Image.asset(
-                          'assets/imgs/logo.png',
-                          height: 200,
+                  const BtnsSet(),
+                  const Padding(
+                    padding: EdgeInsets.only(top: 30, left: 30, bottom: 20),
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        "#News",
+                        style: TextStyle(
+                          color: Color(0xff676259),
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const Text(
-                        "data",
-                        style: TextStyle(color: Colors.black, fontSize: 40),
-                      ),
-                    ],
+                    ),
                   ),
-                  const Padding(padding: EdgeInsets.only(top: 250, right: 30)),
-                  Stack(
-                    alignment: Alignment.topLeft,
-                    children: [
-                      Image.asset(
-                        'assets/imgs/logo.png',
-                        height: 200,
-                      ),
-                      const Text(
-                        "data",
-                        style: TextStyle(color: Colors.black, fontSize: 40),
-                      ),
-                    ],
-                  ),
-                  const Padding(padding: EdgeInsets.only(top: 250, right: 30)),
-                  Stack(
-                    alignment: Alignment.topLeft,
-                    children: [
-                      Image.asset(
-                        'assets/imgs/logo.png',
-                        height: 200,
-                      ),
-                      const Text(
-                        "data",
-                        style: TextStyle(color: Colors.black, fontSize: 40),
-                      ),
-                    ],
-                  ),
-                  const Padding(padding: EdgeInsets.only(top: 250, right: 30)),
-                  Stack(
-                    alignment: Alignment.topLeft,
-                    children: [
-                      Image.asset(
-                        'assets/imgs/logo.png',
-                        height: 200,
-                      ),
-                      const Text(
-                        "data",
-                        style: TextStyle(color: Colors.black, fontSize: 40),
-                      ),
-                    ],
-                  ),
+                  SizedBox(
+                    height: 170, // Define height for the ListView
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: 10, // Adjust for number of items
+                      itemBuilder: (context, index) {
+                        return const Padding(
+                          padding: EdgeInsets.only(right: 25),
+                          child: EventImageStack(),
+                        );
+                      },
+                    ),
+                  )
                 ],
               ),
             ),
           ],
         ),
+        bottomNavigationBar: const CustomBottomAppBar(),
       ),
     );
   }
