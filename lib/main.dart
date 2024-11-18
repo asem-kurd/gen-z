@@ -1,12 +1,13 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_99/createuser.dart';
-import 'package:flutter_application_99/filter.dart';
-import 'package:flutter_application_99/login.dart';
-import 'package:flutter_application_99/organiston.dart';
-import 'package:flutter_application_99/organiztion_screen.dart';
-import 'package:flutter_application_99/profile.dart';
+import 'package:flutter_application_99/screens/events_screen.dart';
+import 'package:flutter_application_99/screens/filter_events_screen.dart';
+import 'package:flutter_application_99/screens/home_screen.dart';
+import 'package:flutter_application_99/screens/sign_In_screen.dart';
+import 'package:flutter_application_99/screens/organiston_registrar_screen.dart';
+import 'package:flutter_application_99/screens/organiztion_screen.dart';
+import 'package:flutter_application_99/screens/profile_screen.dart';
 import 'package:get/get.dart';
 // Uncommenting SharedPreferences if needed later
 // import 'package:shared_preferences/shared_preferences.dart';
@@ -26,18 +27,36 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/Login',
+      initialRoute: '/EventsScreen',
       getPages: [
-        GetPage(name: '/Login', page: () => const Login()),
-        GetPage(name: '/CreateUser', page: () => CreateUser()),
-        GetPage(name: '/Organiston', page: () => Organiston()),
-        GetPage(name: '/ProfileScreen', page: () => const ProfileScreen()),
         GetPage(
-            name: '/OrganizationScreen',
-            page: () => const OrganizationScreen()),
+          name: '/HomeScreen',
+          page: () => HomeScreen(),
+        ),
         GetPage(
-            name: '/FilterEventsScreen',
-            page: () => const FilterEventsScreen()),
+          name: '/SignInScreen',
+          page: () => const SignInScreen(),
+        ),
+        GetPage(
+          name: '/ProfileScreen',
+          page: () => const ProfileScreen(),
+        ),
+        GetPage(
+          name: '/OrganizationScreen',
+          page: () => const OrganizationScreen(),
+        ),
+        GetPage(
+          name: '/FilterEventsScreen',
+          page: () => const FilterEventsScreen(),
+        ),
+        GetPage(
+          name: '/OrganistonRegistrarScreen',
+          page: () => OrganistonRegistrarScreen(),
+        ),
+        GetPage(
+          name: '/EventsScreen',
+          page: () => const EventsScreen(),
+        ),
       ],
     );
   }

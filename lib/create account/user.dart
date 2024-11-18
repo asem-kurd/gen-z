@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_99/Repetitions/radio.dart';
-import 'package:flutter_application_99/Repetitions/txtfiled.dart';
+import 'package:flutter_application_99/widgets/radio.dart';
+import 'package:flutter_application_99/widgets/txtfiled.dart';
 import 'package:flutter_application_99/create%20account/getcontroller.dart';
 import 'package:flutter_application_99/create%20account/org.dart';
 import 'package:get/get.dart';
