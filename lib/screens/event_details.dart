@@ -11,8 +11,7 @@ class EventDetails extends StatelessWidget {
 
     return Scaffold(
       body: Padding(
-        padding:
-            EdgeInsets.all(screenWidth * 0.04), // Adjust padding dynamically
+        padding: EdgeInsets.all(screenWidth * 0.04),
         child: ListView(
           children: [
             Column(
@@ -21,39 +20,37 @@ class EventDetails extends StatelessWidget {
                 AppBar(
                   leading: IconButton(
                     icon: const Icon(Icons.arrow_back),
-                    onPressed: () {
-                      // Implement back button functionality
-                    },
+                    onPressed: () {},
                   ),
                   actions: const [],
                 ),
                 Text(
                   'Smart Writer',
                   style: TextStyle(
-                    fontSize: screenWidth * 0.08, // Responsive font size
+                    fontSize: screenWidth * 0.08,
                   ),
                 ),
-                SizedBox(height: screenHeight * 0.01), // Dynamic spacing
+                SizedBox(height: screenHeight * 0.01),
                 Row(
                   children: [
                     Text(
                       'Avaliable',
                       style: TextStyle(
                         color: Colors.green,
-                        fontSize: screenWidth * 0.04, // Responsive font size
+                        fontSize: screenWidth * 0.04,
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: screenHeight * 0.06), // Dynamic spacing
+                SizedBox(height: screenHeight * 0.06),
                 Text(
                   'Participation Hours: 4',
                   style: TextStyle(
-                    fontSize: screenWidth * 0.045, // Responsive font size
+                    fontSize: screenWidth * 0.045,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: screenHeight * 0.01), // Dynamic spacing
+                SizedBox(height: screenHeight * 0.01),
                 Container(
                   width: screenWidth,
                   decoration: BoxDecoration(
@@ -113,15 +110,15 @@ class EventDetails extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: screenHeight * 0.02), // Dynamic spacing
+                SizedBox(height: screenHeight * 0.02),
                 Text(
                   'Description',
                   style: TextStyle(
-                    fontSize: screenWidth * 0.045, // Responsive font size
+                    fontSize: screenWidth * 0.045,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: screenHeight * 0.01), // Dynamic spacing
+                SizedBox(height: screenHeight * 0.01),
                 Container(
                   decoration: BoxDecoration(
                     border: Border.all(
@@ -139,8 +136,8 @@ class EventDetails extends StatelessWidget {
                       ),
                     ],
                   ),
-                  height: screenHeight * 0.15, // Responsive height
-                  width: screenWidth * 0.9, // Responsive width
+                  height: screenHeight * 0.15,
+                  width: screenWidth * 0.9,
                   child: Padding(
                     padding: EdgeInsets.all(screenWidth * 0.06),
                     child: const Text(
@@ -148,11 +145,10 @@ class EventDetails extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: screenHeight * 0.04), // Dynamic spacing
-                // ignore: prefer_const_constructors
-                Row(
+                SizedBox(height: screenHeight * 0.04),
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: const [
+                  children: [
                     EventSeatsOrJoined(
                       name: "Avaliable Seats",
                       number: 60,
@@ -163,7 +159,7 @@ class EventDetails extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: screenHeight * 0.015), // Dynamic spacing
+                SizedBox(height: screenHeight * 0.015),
                 Center(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -173,13 +169,11 @@ class EventDetails extends StatelessWidget {
                         borderRadius: BorderRadius.circular(screenWidth * 0.02),
                       ),
                       minimumSize: Size(
-                        screenWidth * 0.3, // Dynamic button width
-                        screenHeight * 0.05, // Dynamic button height
+                        screenWidth * 0.3,
+                        screenHeight * 0.05,
                       ),
                     ),
-                    onPressed: () {
-                      // Add hours or requests action
-                    },
+                    onPressed: () {},
                     child: Text(
                       "Add",
                       style: TextStyle(fontSize: screenWidth * 0.045),

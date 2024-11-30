@@ -16,7 +16,6 @@ import 'package:get/get.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  // SharedPreferences sharedpref = await SharedPreferences.getInstance();
 
   runApp(
     DevicePreview(
