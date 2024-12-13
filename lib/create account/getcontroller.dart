@@ -7,6 +7,8 @@ class RegistrationController extends GetxController {
   var selectedCity = 'Amman'.obs;
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
+    final RegistrationController control = Get.put(RegistrationController());
+
 
   // Form key for validation
   final formKey = GlobalKey<FormState>();

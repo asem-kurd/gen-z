@@ -36,10 +36,19 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
   get: ^4.6.6
-  shared_preferences: ^2.3.2
+  shared_preferences: ^2.3.3
   device_preview: ^1.2.0
   http: ^1.2.2
   drop_down_list: ^0.0.8
+  firebase_auth: ^5.3.3
+  firebase_core: ^3.8.0
+  cloud_firestore: ^5.5.0
+  rive: ^0.13.17
+  sqflite: ^2.3.3+1
+  path: ^1.9.0
+  image_picker: ^1.1.2
+  supabase_flutter: ^2.8.1
+  supabase_auth_ui: ^0.5.4
 
 dev_dependencies:
   flutter_test:
@@ -65,8 +74,22 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/images/
-
+    - assets/images/Image/Calendar_duotone_line.png
+    - assets/images/Image/Logo.png
+    - assets/images/Image/home-05.png
+    - assets/images/Image/server-02.png
+    - assets/images/Image/User_scan_duotone_line.png
+    - assets/images/Image/Filter.png
+    - assets/images/Image/share.png
+    - assets/images/Image/globe.png
+    - assets/images/Image/Icon (1).png
+    - assets/images/Image/Icon (2).png
+    - assets/images/Image/Icon (3).png
+    - assets/images/Image/Icon (4).png
+    - assets/images/Image/Date_fill@3x.png
+    - assets/images/Image/server-02 (1).png
+    - assets/images/Image/globe-01.png
+    - assets/images/Image/Filter.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

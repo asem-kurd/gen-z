@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_99/widgets/events_container.dart';
-import 'package:flutter_application_99/widgets/organization_container.dart';
+import 'package:flutter_application_99/widget_event/events_container.dart';
 
 class AllEvents extends StatelessWidget {
   const AllEvents({super.key});

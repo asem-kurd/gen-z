@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "174277723262",
+    "project_id": "gen-z2024",
+    "storage_bucket": "gen-z2024.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:174277723262:android:e36b695589a729a0eb042f",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application_99"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAn087P6e8cw3ZzxUjmTIALbJB16FEAtB8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
