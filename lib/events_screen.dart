@@ -14,6 +14,7 @@ class EventsScreen extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        appBar: CustomAppBar2(appBarName: "Events", toolbarHeight: screenHeight * 0.05),
         body: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(

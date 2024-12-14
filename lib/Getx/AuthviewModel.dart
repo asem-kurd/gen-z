@@ -48,7 +48,7 @@ class Authviewmodel extends GetxController {
         password: password,
       );
 
-      Get.offAll(controll_home());
+      Get.offAll(const controll_home());
     } on FirebaseAuthException catch (e) {
       String errorMessage = "An unexpected error occurred";
       if (e.code == 'user-not-found') {

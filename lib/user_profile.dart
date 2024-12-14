@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_99/SetProfilePicture.dart';
+import 'package:flutter_application_99/repetitions/appbar.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -33,8 +34,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       home: SafeArea(
         child: Scaffold(
           body: ListView(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.only(top: 30, right: 16, left: 16),
             children: [
+              CustomAppBar1(),
               Column(
                 children: [
                   SetProfilePicture(
@@ -53,7 +55,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   FittedBox(
                     fit: BoxFit.scaleDown,
                     child: Text(
-                      "$name",
+                      name,
                       style: const TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.bold,
@@ -114,46 +116,46 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ],
                     ),
                   ),
+                  // SizedBox(height: screenHeight * 0.02),
+                  // Container(
+                  //   padding:
+                  //       EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+                  //   decoration: const BoxDecoration(
+                  //     gradient: LinearGradient(colors: [
+                  //       Color(0xFFebe9f2),
+                  //       Color(0xFFfaead6),
+                  //     ]),
+                  //   ),
+                  //   height: screenHeight * 0.1,
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //     children: [
+                  //       const FittedBox(
+                  //         fit: BoxFit.scaleDown,
+                  //         child: Text(
+                  //           "Hours Completed: 03\nRequests: 00",
+                  //           style: TextStyle(
+                  //               fontSize: 16, fontWeight: FontWeight.bold),
+                  //         ),
+                  //       ),
+                  //       ElevatedButton(
+                  //         style: ElevatedButton.styleFrom(
+                  //           backgroundColor: const Color(0xff5A5D62),
+                  //           foregroundColor: Colors.white,
+                  //           shape: RoundedRectangleBorder(
+                  //             borderRadius: BorderRadius.circular(10.0),
+                  //           ),
+                  //           minimumSize:
+                  //               Size(screenWidth * 0.3, screenHeight * 0.05),
+                  //         ),
+                  //         onPressed: () {},
+                  //         child: const Text("Add"),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                   SizedBox(height: screenHeight * 0.02),
-                  Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(colors: [
-                        Color(0xFFebe9f2),
-                        Color(0xFFfaead6),
-                      ]),
-                    ),
-                    height: screenHeight * 0.1,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const FittedBox(
-                          fit: BoxFit.scaleDown,
-                          child: Text(
-                            "Hours Completed: 03\nRequests: 00",
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xff5A5D62),
-                            foregroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            minimumSize:
-                                Size(screenWidth * 0.3, screenHeight * 0.05),
-                          ),
-                          onPressed: () {},
-                          child: const Text("Add"),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: screenHeight * 0.02),
-                  const Text("Completed Activity",
+                  const Text("Registered Events",
                       style: TextStyle(fontSize: 30)),
                   const SizedBox(height: 50),
                   SizedBox(
@@ -219,7 +221,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     ),
                                     alignment: Alignment.center,
                                     child: const Text(
-                                      "Volunteer Certificate",
+                                      "Delete",
                                       style: TextStyle(color: Colors.black),
                                     ),
                                   ),
