@@ -7,6 +7,7 @@ import 'package:flutter_application_99/SetProfilePicture.dart';
 import 'package:flutter_application_99/controll_home.dart';
 import 'package:flutter_application_99/org_reg.dart';
 import 'package:flutter_application_99/test_add_updata.dart';
+import 'package:flutter_application_99/theme_service.dart';
 import 'package:flutter_application_99/user_home.dart';
 import 'package:flutter_application_99/Loginuser.dart';
 import 'package:flutter_application_99/filter.dart';
@@ -16,6 +17,7 @@ import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<void> main() async {
@@ -35,6 +37,8 @@ Future<void> main() async {
       projectId: "gen-z2024",
     ),
   );
+
+  await GetStorage.init();
   runApp(
     DevicePreview(
       enabled: !kReleaseMode, // Enable DevicePreview only in debug mode
@@ -49,14 +53,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      theme: ThemeService().lightTheme,
+      darkTheme: ThemeService().darkTheme,
+      themeMode: ThemeService().getThemeMode(),
       debugShowCheckedModeBanner: false,
       initialBinding: InitialBinding(),
       home: Scaffold(
         body: CreateUser(),
       ),
-      theme: ThemeData(
-        fontFamily: 'SourceSans',
-      ),
+      // theme: ThemeData(
+      //   fontFamily: 'SourceSans',
+      // ),
     );
   }
 }

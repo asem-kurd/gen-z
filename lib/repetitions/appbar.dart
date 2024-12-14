@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_99/theme_service.dart';
 import 'package:popover/popover.dart';
 
 class CustomAppBar1 extends StatelessWidget {
@@ -67,7 +68,9 @@ class CustomAppBar1 extends StatelessWidget {
             ),
             PopupMenuItem(
               child: InkWell(
-                onTap: () {}, // Handle tap actions
+                onTap: () {
+                  ThemeService().changeTheme();
+                }, // Handle tap actions
                 hoverColor: Color(0xffBDBEC0), // Hover color
                 borderRadius: BorderRadius.circular(8),
                 child: Row(
