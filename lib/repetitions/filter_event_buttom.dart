@@ -57,7 +57,7 @@ class FilterEventsBtn extends StatelessWidget {
             // Button name, without the SizedBox in between
             Text(
               btnName,
-              style: const TextStyle(
+              style:  TextStyle(
                   color: Color(0xff676259),
                   fontSize: 14, // Adjust font size for better visibility
                   fontWeight: FontWeight.bold),

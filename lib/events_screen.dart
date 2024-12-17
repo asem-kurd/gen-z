@@ -4,6 +4,7 @@ import 'package:flutter_application_99/Repetitions/events_foryou.dart';
 import 'package:flutter_application_99/Repetitions/iconbar.dart';
 import 'package:flutter_application_99/repetitions/all_events.dart';
 import 'package:flutter_application_99/widget_event/popular.dart';
+import 'package:get/get.dart';
 
 class EventsScreen extends StatelessWidget {
   const EventsScreen({super.key});
@@ -14,7 +15,7 @@ class EventsScreen extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        appBar: CustomAppBar2(appBarName: "Events", toolbarHeight: screenHeight * 0.05),
+        appBar: CustomAppBar2(appBarName: "20".tr, toolbarHeight: screenHeight * 0.05),
         body: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -24,7 +25,7 @@ class EventsScreen extends StatelessWidget {
               ],
             ),
           ),
-          child: const DefaultTabController(
+          child:  DefaultTabController(
             initialIndex: 1,
             length: 3,
             child: Column(
@@ -35,13 +36,13 @@ class EventsScreen extends StatelessWidget {
                   unselectedLabelColor: Color(0xff5A5D62),
                   tabs: [
                     Tab(
-                      text: "For you",
+                      text: "21".tr,
                     ),
                     Tab(
-                      text: "All Events",
+                      text: "22".tr,
                     ),
                     Tab(
-                      text: "Popular",
+                      text: "23".tr,
                     ),
                   ],
                 ),

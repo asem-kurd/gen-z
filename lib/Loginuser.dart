@@ -8,6 +8,7 @@ import 'package:flutter_application_99/user_profile.dart';
 import 'dart:ui' as ui;
 import 'package:get/get.dart';
 
+
 // ignore: must_be_immutable
 class CreateUser extends GetView<Authviewmodel> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -69,15 +70,14 @@ class CreateUser extends GetView<Authviewmodel> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    const Text(
-                      "Sign in with your GEN-Z Member",
+                    Text("1".tr,
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const Text(
-                      "or Organization",
+                    Text(
+                      "2".tr,
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -88,7 +88,7 @@ class CreateUser extends GetView<Authviewmodel> {
                       margin: EdgeInsets.symmetric(horizontal: height * 0.06),
                       child: TextFormField(
                         decoration: InputDecoration(
-                          hintText: 'Email',
+                          hintText: '3'.tr,
                           hintStyle: const TextStyle(
                               color: Color(0xFF474448),
                               fontWeight: FontWeight.bold),
@@ -116,7 +116,7 @@ class CreateUser extends GetView<Authviewmodel> {
                       child: Obx(
                         () => TextFormField(
                           decoration: InputDecoration(
-                            hintText: 'Password',
+                            hintText: '4'.tr,
                             hintStyle: const TextStyle(
                                 color: Color(0xFF474448),
                                 fontWeight: FontWeight.bold),
@@ -185,8 +185,8 @@ class CreateUser extends GetView<Authviewmodel> {
                             ),
                           ),
                         ),
-                        const Text(
-                          "Login as Organization",
+                        Text(
+                          "5".tr,
                           style: TextStyle(
                             fontFamily: 'Arial',
                             fontSize: 12,
@@ -202,8 +202,8 @@ class CreateUser extends GetView<Authviewmodel> {
                             onTap: () {
                               // Action for "Forgot password?"
                             },
-                            child: const Text(
-                              "Forgot password?",
+                            child: Text(
+                              "6".tr,
                               style: TextStyle(
                                 fontFamily: 'Arial',
                                 fontSize: 12,
@@ -230,8 +230,8 @@ class CreateUser extends GetView<Authviewmodel> {
                           controller.signUpWithEmailAndPassword();
                         }
                       },
-                      child: const Text(
-                        "Sign in",
+                      child: Text(
+                        "7".tr,
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
@@ -244,8 +244,8 @@ class CreateUser extends GetView<Authviewmodel> {
                         Get.to(() => Organiston());
                         // Add account creation logic here
                       },
-                      child: const Text(
-                        "Create your GEN-Z Account",
+                      child:  Text(
+                        "8".tr,
                         style: TextStyle(color: Colors.white),
                       ),
                     ),

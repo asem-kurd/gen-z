@@ -2,7 +2,10 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_99/SetProfilePicture.dart';
+import 'package:flutter_application_99/locale/locale_controller.dart';
 import 'package:flutter_application_99/repetitions/appbar.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -24,6 +27,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    MyLocaleController controllerLanguage = Get.find();
     final user = Supabase.instance.client.auth.currentUser;
     final screenHeight = MediaQuery.sizeOf(context).height;
     final screenWidth = MediaQuery.sizeOf(context).width;
@@ -63,17 +67,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xff5A5D62),
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      minimumSize: Size(screenWidth * 0.5, screenHeight * 0.06),
+                  Container(
+                    width: screenWidth * 0.5,
+                    height: screenHeight * 0.06,
+                    decoration: BoxDecoration(
+                      color: const Color(0xff5A5D62), // Background color
+                      borderRadius:
+                          BorderRadius.circular(10.0), // Rounded corners
                     ),
-                    onPressed: () {},
-                    child: const Text("Volunteer"),
+                    alignment: Alignment.center,
+                    child: const Text(
+                      "Volunteer",
+                      style: TextStyle(
+                        color: Colors.white, // Text color
+                        fontSize: 16, // Adjust font size if needed
+                        fontWeight:
+                            FontWeight.w500, // Optional: adjust font weight
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 50),
                   Container(
@@ -107,8 +118,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               size: 30,
                             ),
                             SizedBox(width: screenWidth * 0.02),
-                            const Text(
-                              "33 Points",
+                            Text(
+                              "33 " + "30".tr,
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                           ],
@@ -155,8 +166,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   //   ),
                   // ),
                   SizedBox(height: screenHeight * 0.02),
-                  const Text("Registered Events",
-                      style: TextStyle(fontSize: 30)),
+                  Text("31".tr, style: TextStyle(fontSize: 30)),
                   const SizedBox(height: 50),
                   SizedBox(
                     height: screenHeight * 0.25,
@@ -220,8 +230,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       minHeight: 50,
                                     ),
                                     alignment: Alignment.center,
-                                    child: const Text(
-                                      "Delete",
+                                    child: Text(
+                                      "32".tr,
                                       style: TextStyle(color: Colors.black),
                                     ),
                                   ),

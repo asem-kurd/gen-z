@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_99/locale/locale_controller.dart';
 import 'package:flutter_application_99/theme_service.dart';
 import 'package:popover/popover.dart';
+import 'package:get/get.dart';
 
 class CustomAppBar1 extends StatelessWidget {
   const CustomAppBar1({super.key});
 
   @override
   Widget build(BuildContext context) {
+    MyLocaleController controllerLanguage = Get.find();
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -47,7 +50,7 @@ class CustomAppBar1 extends StatelessWidget {
                   children: [
                     Icon(Icons.person, color: Colors.black),
                     SizedBox(width: 16), // Space between icon and text
-                    Text("Profile"),
+                    Text("24".tr),
                   ],
                 ),
               ),
@@ -61,7 +64,7 @@ class CustomAppBar1 extends StatelessWidget {
                   children: [
                     Icon(Icons.home, color: Colors.black),
                     SizedBox(width: 16), // Space between icon and text
-                    Text("Home"),
+                    Text("25".tr),
                   ],
                 ),
               ),
@@ -77,7 +80,7 @@ class CustomAppBar1 extends StatelessWidget {
                   children: [
                     Icon(Icons.dark_mode, color: Colors.black),
                     SizedBox(width: 16), // Space between icon and text
-                    Text("Dark Theme"),
+                    Text("26".tr),
                   ],
                 ),
               ),
@@ -91,7 +94,7 @@ class CustomAppBar1 extends StatelessWidget {
                       children: [
                         Icon(Icons.filter_alt, color: Colors.black),
                         SizedBox(width: 16), // Space between icon and text
-                        Text("Filter events"),
+                        Text("27".tr),
                       ],
                     ),
                     Divider(
@@ -110,7 +113,7 @@ class CustomAppBar1 extends StatelessWidget {
                   children: [
                     Icon(Icons.settings, color: Colors.black),
                     SizedBox(width: 16), // Space between icon and text
-                    Text("Settings"),
+                    Text("28".tr),
                   ],
                 ),
               ),
@@ -124,18 +127,54 @@ class CustomAppBar1 extends StatelessWidget {
                   children: [
                     Icon(Icons.logout, color: Colors.black),
                     SizedBox(width: 16), // Space between icon and text
-                    Text("Log out"),
+                    Text("29".tr),
                   ],
                 ),
               ),
             ),
           ],
         ),
-        IconButton(
-          iconSize: 33,
-          onPressed: () {},
-          icon: const Icon(Icons.language),
-        ),
+        PopupMenuButton(
+          child: Icon(Icons.language),
+          offset: Offset(0, 50), // Adjusts the popup position
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          itemBuilder: (context) => [
+            PopupMenuItem(
+              onTap: () {
+                controllerLanguage.changeLanguage("ar");
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: Column(
+                  children: [
+                    Text("العربية"),
+                    Divider(
+                      thickness: 1,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            PopupMenuItem(
+              onTap: () {
+                controllerLanguage.changeLanguage("en");
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: Column(
+                  children: [
+                    Text("English"),
+                    Divider(
+                      thickness: 1,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        )
       ],
     );
   }

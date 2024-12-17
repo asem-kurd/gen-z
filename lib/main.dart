@@ -5,6 +5,8 @@ import 'package:flutter_application_99/Getx/controllview.dart';
 import 'package:flutter_application_99/Repetitions/grawer__list.dart';
 import 'package:flutter_application_99/SetProfilePicture.dart';
 import 'package:flutter_application_99/controll_home.dart';
+import 'package:flutter_application_99/locale/locale.dart';
+import 'package:flutter_application_99/locale/locale_controller.dart';
 import 'package:flutter_application_99/org_reg.dart';
 import 'package:flutter_application_99/test_add_updata.dart';
 import 'package:flutter_application_99/theme_service.dart';
@@ -52,7 +54,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(MyLocaleController());
     return GetMaterialApp(
+      locale: Get.deviceLocale,
+      translations: MyLocale(),
       theme: ThemeService().lightTheme,
       darkTheme: ThemeService().darkTheme,
       themeMode: ThemeService().getThemeMode(),

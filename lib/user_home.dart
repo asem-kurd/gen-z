@@ -47,7 +47,7 @@ class Home extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.only(top: screenHeight * 0.04),
                       child: InkWell(
-                        onTap: () {}, 
+                        onTap: () {},
                         child: const Icon(Icons.notifications,
                             color: Color(0xff575a60)),
                       ),
@@ -59,7 +59,7 @@ class Home extends StatelessWidget {
                   width: screenWidth * 0.83,
                   child: TextFormField(
                     decoration: InputDecoration(
-                      hintText: "Search",
+                      hintText: "9".tr,
                       hintStyle: const TextStyle(color: Color(0xffb2b0ab)),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20),
@@ -73,13 +73,13 @@ class Home extends StatelessWidget {
             ),
           ),
           // Special Section
-          const Padding(
+          Padding(
             padding: EdgeInsets.all(20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "#SpecialForYou",
+                  "10".tr,
                   style: TextStyle(
                     fontSize: 18,
                     color: Colors.black,
@@ -88,7 +88,7 @@ class Home extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "See All",
+                  "12".tr,
                   style: TextStyle(fontSize: 13, color: Colors.grey),
                 ),
               ],
@@ -145,13 +145,13 @@ class Home extends StatelessWidget {
             ),
           ),
           // Upcoming Events Section
-          const Padding(
+          Padding(
             padding: EdgeInsets.all(20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "#Upcoming Events",
+                  "11".tr,
                   style: TextStyle(
                     fontSize: 18,
                     color: Colors.black,
@@ -160,7 +160,7 @@ class Home extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "See All",
+                  "12".tr,
                   style: TextStyle(fontSize: 13, color: Colors.grey),
                 ),
               ],

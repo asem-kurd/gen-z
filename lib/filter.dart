@@ -4,6 +4,7 @@ import 'package:flutter_application_99/Repetitions/appbar2.dart';
 import 'package:flutter_application_99/Repetitions/iconbar.dart';
 import 'package:flutter_application_99/Repetitions/listviewimage.dart';
 import 'package:flutter_application_99/menu_fillter.dart';
+import 'package:get/get.dart';
 
 class FilterEventsScreen extends StatelessWidget {
   const FilterEventsScreen({super.key});
@@ -72,8 +73,8 @@ class FilterEventsScreen extends StatelessWidget {
                       top: screenHeight * 0.05,
                       right: screenWidth * 0.5,
                     ),
-                    child: const Text(
-                      "Filter Events",
+                    child: Text(
+                      "12".tr,
                       style: TextStyle(
                           color: Color(0xff65625E),
                           fontSize: 25,
@@ -86,12 +87,12 @@ class FilterEventsScreen extends StatelessWidget {
               Column(
                 children: [
                   const BtnsSet(),
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.only(top: 30, left: 30, bottom: 20),
                     child: Align(
                       alignment: Alignment.topLeft,
                       child: Text(
-                        "#News",
+                        "19".tr,
                         style: TextStyle(
                           color: Color(0xff676259),
                           fontSize: 25,
