@@ -165,7 +165,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   //     ],
                   //   ),
                   // ),
-                  SizedBox(height: screenHeight * 0.02),
+                  SizedBox(height: screenHeight * 0.05),
                   Text("31".tr, style: TextStyle(fontSize: 30)),
                   const SizedBox(height: 50),
                   SizedBox(

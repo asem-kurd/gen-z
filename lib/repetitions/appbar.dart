@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_99/locale/locale_controller.dart';
-import 'package:flutter_application_99/theme_service.dart';
+import 'package:flutter_application_99/theme_controller.dart';
 import 'package:popover/popover.dart';
 import 'package:get/get.dart';
 
@@ -14,15 +14,15 @@ class CustomAppBar1 extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         PopupMenuButton(
-          offset: Offset(0, 50), // Adjusts the popup position
+          offset: const Offset(0, 50), // Adjusts the popup position
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
           itemBuilder: (context) => [
-            PopupMenuItem(
+            const PopupMenuItem(
               enabled: false, // Make the title non-interactive
               child: Padding(
-                padding: const EdgeInsets.only(bottom: 22),
+                padding: EdgeInsets.only(bottom: 22),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -44,12 +44,12 @@ class CustomAppBar1 extends StatelessWidget {
             PopupMenuItem(
               child: InkWell(
                 onTap: () {}, // Handle tap actions
-                hoverColor: Color(0xffBDBEC0), // Hover color
+                hoverColor: const Color(0xffBDBEC0), // Hover color
                 borderRadius: BorderRadius.circular(8),
                 child: Row(
                   children: [
-                    Icon(Icons.person, color: Colors.black),
-                    SizedBox(width: 16), // Space between icon and text
+                    const Icon(Icons.person, color: Colors.black),
+                    const SizedBox(width: 16), // Space between icon and text
                     Text("24".tr),
                   ],
                 ),
@@ -58,28 +58,31 @@ class CustomAppBar1 extends StatelessWidget {
             PopupMenuItem(
               child: InkWell(
                 onTap: () {}, // Handle tap actions
-                hoverColor: Color(0xffBDBEC0), // Hover color
+                hoverColor: const Color(0xffBDBEC0), // Hover color
                 borderRadius: BorderRadius.circular(8),
                 child: Row(
                   children: [
-                    Icon(Icons.home, color: Colors.black),
-                    SizedBox(width: 16), // Space between icon and text
+                    const Icon(Icons.home, color: Colors.black),
+                    const SizedBox(width: 16), // Space between icon and text
                     Text("25".tr),
                   ],
                 ),
               ),
             ),
+            /**theme*************************************** */
             PopupMenuItem(
               child: InkWell(
                 onTap: () {
-                  ThemeService().changeTheme();
-                }, // Handle tap actions
-                hoverColor: Color(0xffBDBEC0), // Hover color
+                  final themeController = Get.find<ThemeController>();
+                  themeController
+                      .toggleTheme(); // Use the ThemeController to handle the change
+                },
+                hoverColor: const Color(0xffBDBEC0), // Hover color
                 borderRadius: BorderRadius.circular(8),
                 child: Row(
                   children: [
-                    Icon(Icons.dark_mode, color: Colors.black),
-                    SizedBox(width: 16), // Space between icon and text
+                    const Icon(Icons.dark_mode, color: Colors.black),
+                    const SizedBox(width: 16), // Space between icon and text
                     Text("26".tr),
                   ],
                 ),
@@ -92,12 +95,13 @@ class CustomAppBar1 extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        Icon(Icons.filter_alt, color: Colors.black),
-                        SizedBox(width: 16), // Space between icon and text
+                        const Icon(Icons.filter_alt, color: Colors.black),
+                        const SizedBox(
+                            width: 16), // Space between icon and text
                         Text("27".tr),
                       ],
                     ),
-                    Divider(
+                    const Divider(
                       thickness: 1,
                     ),
                   ],
@@ -107,12 +111,12 @@ class CustomAppBar1 extends StatelessWidget {
             PopupMenuItem(
               child: InkWell(
                 onTap: () {}, // Handle tap actions
-                hoverColor: Color(0xffBDBEC0), // Hover color
+                hoverColor: const Color(0xffBDBEC0), // Hover color
                 borderRadius: BorderRadius.circular(8),
                 child: Row(
                   children: [
-                    Icon(Icons.settings, color: Colors.black),
-                    SizedBox(width: 16), // Space between icon and text
+                    const Icon(Icons.settings, color: Colors.black),
+                    const SizedBox(width: 16), // Space between icon and text
                     Text("28".tr),
                   ],
                 ),
@@ -121,12 +125,12 @@ class CustomAppBar1 extends StatelessWidget {
             PopupMenuItem(
               child: InkWell(
                 onTap: () {}, // Handle tap actions
-                hoverColor: Color(0xffBDBEC0), // Hover color
+                hoverColor: const Color(0xffBDBEC0), // Hover color
                 borderRadius: BorderRadius.circular(8),
                 child: Row(
                   children: [
-                    Icon(Icons.logout, color: Colors.black),
-                    SizedBox(width: 16), // Space between icon and text
+                    const Icon(Icons.logout, color: Colors.black),
+                    const SizedBox(width: 16), // Space between icon and text
                     Text("29".tr),
                   ],
                 ),
@@ -135,8 +139,7 @@ class CustomAppBar1 extends StatelessWidget {
           ],
         ),
         PopupMenuButton(
-          child: Icon(Icons.language),
-          offset: Offset(0, 50), // Adjusts the popup position
+          offset: const Offset(0, 50), // Adjusts the popup position
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
@@ -145,8 +148,8 @@ class CustomAppBar1 extends StatelessWidget {
               onTap: () {
                 controllerLanguage.changeLanguage("ar");
               },
-              child: Padding(
-                padding: const EdgeInsets.all(8),
+              child: const Padding(
+                padding: EdgeInsets.all(8),
                 child: Column(
                   children: [
                     Text("العربية"),
@@ -161,8 +164,8 @@ class CustomAppBar1 extends StatelessWidget {
               onTap: () {
                 controllerLanguage.changeLanguage("en");
               },
-              child: Padding(
-                padding: const EdgeInsets.all(8),
+              child: const Padding(
+                padding: EdgeInsets.all(8),
                 child: Column(
                   children: [
                     Text("English"),
@@ -174,6 +177,7 @@ class CustomAppBar1 extends StatelessWidget {
               ),
             ),
           ],
+          child: Icon(Icons.language),
         )
       ],
     );

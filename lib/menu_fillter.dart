@@ -14,12 +14,12 @@ class BtnsSet extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             FilterEventsBtn(
-              iconColor: Color(0xffE4AB56),
+              iconColor: const Color(0xffE4AB56),
               icon: Icons.help_outline,
               btnName: "13".tr,
             ),
             FilterEventsBtn(
-              iconColor: Color(0xff4584C5),
+              iconColor: const Color(0xff4584C5),
               icon: Icons.school,
               btnName: "14".tr,
             ),
@@ -35,14 +35,14 @@ class BtnsSet extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             FilterEventsBtn(
-                iconColor: Color(0xff97CA4F),
+                iconColor: const Color(0xff97CA4F),
                 icon: Icons.code,
                 btnName: "15".tr),
-            SizedBox(
+            const SizedBox(
               width: 2,
             ),
             FilterEventsBtn(
-                iconColor: Color(0xffC6986E),
+                iconColor: const Color(0xffC6986E),
                 icon: Icons.sports_basketball_sharp,
                 btnName: "16".tr),
           ],
@@ -57,14 +57,14 @@ class BtnsSet extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             FilterEventsBtn(
-                iconColor: Color(0xffB978B3),
+                iconColor: const Color(0xffB978B3),
                 icon: Icons.health_and_safety,
                 btnName: "17".tr),
-            SizedBox(
+            const SizedBox(
               width: 20,
             ),
             FilterEventsBtn(
-                iconColor: Color(0xff176824),
+                iconColor: const Color(0xff176824),
                 icon: Icons.grass,
                 btnName: "18".tr),
           ],

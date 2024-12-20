@@ -75,7 +75,7 @@ class FilterEventsScreen extends StatelessWidget {
                     ),
                     child: Text(
                       "12".tr,
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: Color(0xff65625E),
                           fontSize: 25,
                           fontWeight: FontWeight.bold),
@@ -88,12 +88,12 @@ class FilterEventsScreen extends StatelessWidget {
                 children: [
                   const BtnsSet(),
                   Padding(
-                    padding: EdgeInsets.only(top: 30, left: 30, bottom: 20),
+                    padding: const EdgeInsets.only(top: 30, left: 30, bottom: 20),
                     child: Align(
                       alignment: Alignment.topLeft,
                       child: Text(
                         "19".tr,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Color(0xff676259),
                           fontSize: 25,
                           fontWeight: FontWeight.bold,

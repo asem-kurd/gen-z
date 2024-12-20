@@ -31,9 +31,9 @@ class EventsScreen extends StatelessWidget {
             child: Column(
               children: [
                 TabBar(
-                  indicatorColor: Color.fromARGB(255, 33, 40, 113),
-                  labelColor: Color.fromARGB(255, 33, 40, 113),
-                  unselectedLabelColor: Color(0xff5A5D62),
+                  indicatorColor: const Color.fromARGB(255, 33, 40, 113),
+                  labelColor: const Color.fromARGB(255, 33, 40, 113),
+                  unselectedLabelColor: const Color(0xff5A5D62),
                   tabs: [
                     Tab(
                       text: "21".tr,
@@ -46,7 +46,7 @@ class EventsScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                Expanded(
+                const Expanded(
                   child: TabBarView(
                     children: [
                       EventsForYou(),

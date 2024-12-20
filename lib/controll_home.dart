@@ -44,9 +44,9 @@ Widget bottomNavigationBar() {
         BottomNavigationBar(
           items: [
             BottomNavigationBarItem(
-              activeIcon: const Padding(
+              activeIcon: Padding(
                 padding: EdgeInsets.only(top: 25),
-                child: Text("Home"),
+                child: Text("25".tr),
               ),
               label: "",
               icon: Padding(
@@ -59,9 +59,9 @@ Widget bottomNavigationBar() {
               ),
             ),
             BottomNavigationBarItem(
-              activeIcon: const Padding(
+              activeIcon: Padding(
                 padding: EdgeInsets.only(top: 25),
-                child: Text("Event"),
+                child: Text("33".tr),
               ),
               label: "",
               icon: Padding(
@@ -74,9 +74,9 @@ Widget bottomNavigationBar() {
               ),
             ),
             BottomNavigationBarItem(
-              activeIcon: const Padding(
+              activeIcon: Padding(
                 padding: EdgeInsets.only(top: 25),
-                child: Text("Organization"),
+                child: Text("34".tr),
               ),
               label: "",
               icon: Padding(
@@ -89,9 +89,9 @@ Widget bottomNavigationBar() {
               ),
             ),
             BottomNavigationBarItem(
-              activeIcon: const Padding(
+              activeIcon: Padding(
                 padding: EdgeInsets.only(top: 25),
-                child: Text("User"),
+                child: Text("35".tr),
               ),
               label: "",
               icon: Padding(

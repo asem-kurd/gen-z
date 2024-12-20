@@ -42,6 +42,10 @@ class MyLocale implements Translations {
           "30": "نقاط",
           "31": "الأحداث المضافة",
           "32": "حذف",
+          /********************bottom bar************************/
+          "33": "الأحداث",
+          "34": "المنظمات",
+          "35": "المستخدم",
         },
         "en": {
           /***************login****************/
@@ -82,6 +86,10 @@ class MyLocale implements Translations {
           "30": "Points",
           "31": "Registered Events",
           "32": "Delete",
+          /********************bottom bar************************/
+          "33": "Events",
+          "34": "Organization",
+          "35": "User",
         }
       };
 }

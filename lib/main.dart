@@ -9,18 +9,22 @@ import 'package:flutter_application_99/locale/locale.dart';
 import 'package:flutter_application_99/locale/locale_controller.dart';
 import 'package:flutter_application_99/org_reg.dart';
 import 'package:flutter_application_99/test_add_updata.dart';
-import 'package:flutter_application_99/theme_service.dart';
+import 'package:flutter_application_99/theme_controller.dart';
 import 'package:flutter_application_99/user_home.dart';
 import 'package:flutter_application_99/Loginuser.dart';
 import 'package:flutter_application_99/filter.dart';
 import 'package:flutter_application_99/user_reg.dart';
 import 'package:flutter_application_99/user_profile.dart';
 import 'package:get/get.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+SharedPreferences? sharepref;
+
+class SharedPreferance {}
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,7 +43,7 @@ Future<void> main() async {
       projectId: "gen-z2024",
     ),
   );
-
+  sharepref = await SharedPreferences.getInstance();
   await GetStorage.init();
   runApp(
     DevicePreview(
@@ -48,27 +52,27 @@ Future<void> main() async {
     ),
   );
 }
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    Get.put(MyLocaleController());
+    final themeController =
+        Get.put(ThemeController()); // Initialize ThemeController
+    final localeController = Get.put(MyLocaleController());
+
     return GetMaterialApp(
-      locale: Get.deviceLocale,
+      locale: localeController.initLanguage,
       translations: MyLocale(),
-      theme: ThemeService().lightTheme,
-      darkTheme: ThemeService().darkTheme,
-      themeMode: ThemeService().getThemeMode(),
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
+      themeMode:
+          themeController.currentThemeMode, // Use ThemeController's theme
       debugShowCheckedModeBanner: false,
       initialBinding: InitialBinding(),
       home: Scaffold(
         body: CreateUser(),
       ),
-      // theme: ThemeData(
-      //   fontFamily: 'SourceSans',
-      // ),
     );
   }
 }

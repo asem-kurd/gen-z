@@ -71,14 +71,14 @@ class CreateUser extends GetView<Authviewmodel> {
                     ),
                     const SizedBox(height: 10),
                     Text("1".tr,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     Text(
                       "2".tr,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                       ),
@@ -187,7 +187,7 @@ class CreateUser extends GetView<Authviewmodel> {
                         ),
                         Text(
                           "5".tr,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontFamily: 'Arial',
                             fontSize: 12,
                             fontWeight: FontWeight.w700,
@@ -204,7 +204,7 @@ class CreateUser extends GetView<Authviewmodel> {
                             },
                             child: Text(
                               "6".tr,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontFamily: 'Arial',
                                 fontSize: 12,
                                 fontWeight: FontWeight.w700,
@@ -232,7 +232,7 @@ class CreateUser extends GetView<Authviewmodel> {
                       },
                       child: Text(
                         "7".tr,
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                       ),
                     ),
                     SizedBox(height: height * 0.02),
@@ -246,7 +246,7 @@ class CreateUser extends GetView<Authviewmodel> {
                       },
                       child:  Text(
                         "8".tr,
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                       ),
                     ),
                     SizedBox(height: height * 0.02),
