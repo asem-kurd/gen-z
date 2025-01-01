@@ -38,7 +38,7 @@ class FilterEventsBtn extends StatelessWidget {
           ),
         ),
         onPressed: () {
-          // Add action for volunteering
+          
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center, // Centers the contents

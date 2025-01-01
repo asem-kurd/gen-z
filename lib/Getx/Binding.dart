@@ -9,5 +9,6 @@ class InitialBinding extends Bindings {
     Get.lazyPut<Authviewmodel>(() => Authviewmodel());
     Get.lazyPut<HomeViewModel>(() => HomeViewModel());
     Get.put(CreateUser());
+    
   }
 }

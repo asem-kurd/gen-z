@@ -1,16 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_99/Getx/AuthviewModel.dart';
 import 'package:flutter_application_99/Repetitions/gradent%20circle.dart';
+import 'package:flutter_application_99/components/login_widget.dart';
 import 'package:flutter_application_99/create%20account/getcontroller.dart';
 import 'package:flutter_application_99/create%20account/org.dart';
 import 'package:flutter_application_99/user_reg.dart';
 import 'package:flutter_application_99/user_profile.dart';
+import 'package:flutter_application_99/widget_Org/org_reg.dart';
 import 'dart:ui' as ui;
 import 'package:get/get.dart';
 
-
-// ignore: must_be_immutable
-class CreateUser extends GetView<Authviewmodel> {
+class CreateUser extends StatelessWidget {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -18,7 +20,9 @@ class CreateUser extends GetView<Authviewmodel> {
   var visabile = false.obs;
   var isConfirmPasswordVisible = false.obs;
   final String text;
-  RxBool isCheckedes = false.obs;
+  RxBool isChecked = false.obs;
+  late bool CheckedOrg;
+
   CreateUser({
     super.key,
     this.text = "Please enter password correctly",
@@ -30,16 +34,16 @@ class CreateUser extends GetView<Authviewmodel> {
     var width = MediaQuery.of(context).size.width;
 
     return Form(
+      
       key: formKey,
       child: Scaffold(
+        
         body: Stack(
           children: [
-            // خلفية مخصصة (CustomPaint) تغطي كامل الشاشة
             CustomPaint(
               size: MediaQuery.of(context).size,
               painter: BackgroundPainter(),
             ),
-            // باقي المحتوى داخل الـ SingleChildScrollView
             SingleChildScrollView(
               child: Padding(
                 padding: EdgeInsets.only(
@@ -47,19 +51,7 @@ class CreateUser extends GetView<Authviewmodel> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(height: height * 0.02),
-                    Container(
-                      alignment: Alignment.topLeft,
-                      child: IconButton(
-                        onPressed: () {
-                          Get.back();
-                        },
-                        icon: const Icon(
-                          Icons.arrow_back,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
+                    SizedBox(height: height * 0.07),
                     const Text(
                       "GEN-Z",
                       style: TextStyle(
@@ -70,45 +62,35 @@ class CreateUser extends GetView<Authviewmodel> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    Text("1".tr,
-                      style: const TextStyle(
+                    const Text(
+                      "Sign in with your GEN-Z Member",
+                      style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Text(
-                      "2".tr,
-                      style: const TextStyle(
+                    const Text(
+                      "or Organization",
+                      style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     SizedBox(height: height * 0.05),
-                    Container(
-                      margin: EdgeInsets.symmetric(horizontal: height * 0.06),
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          hintText: '3'.tr,
-                          hintStyle: const TextStyle(
-                              color: Color(0xFF474448),
-                              fontWeight: FontWeight.bold),
-                          filled: true,
-                          fillColor: Colors.white,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
-                            borderSide: BorderSide.none,
-                          ),
-                        ),
-                        onSaved: (value) {
-                          controller.email = value.toString();
-                        },
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Email field cannot be empty";
-                          }
-                          return null;
-                        },
-                      ),
+                    CustomTextField(
+                      controller: emailController,
+                      hintText: 'Email',
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Email field cannot be empty";
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        authviewmodel.email = value.toString();
+                      },
+                      isPassword: false,
+                      toggleVisibility: () {},
                     ),
                     SizedBox(height: height * 0.02),
                     Container(
@@ -116,8 +98,9 @@ class CreateUser extends GetView<Authviewmodel> {
                       child: Obx(
                         () => TextFormField(
                           decoration: InputDecoration(
-                            hintText: '4'.tr,
+                            hintText: 'Password',
                             hintStyle: const TextStyle(
+                                fontStyle: FontStyle.italic,
                                 color: Color(0xFF474448),
                                 fontWeight: FontWeight.bold),
                             filled: true,
@@ -126,30 +109,19 @@ class CreateUser extends GetView<Authviewmodel> {
                               borderRadius: BorderRadius.circular(20),
                               borderSide: BorderSide.none,
                             ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20),
-                              borderSide: const BorderSide(
-                                  color: Colors.blue, width: 2.0),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20),
-                              borderSide: const BorderSide(
-                                  color: Colors.red, width: 2.0),
-                            ),
                             suffixIcon: IconButton(
                                 icon: Icon(
-                                  visabile.value
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
-                                  color: Colors.black,
-                                ),
+                                    visabile.value
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                    color: const Color(0xff222222)),
                                 onPressed: () {
                                   visabile.value = !visabile.value;
                                 }),
                           ),
                           obscureText: !visabile.value,
                           onSaved: (value) {
-                            controller.password = value.toString();
+                            authviewmodel.password = value.toString();
                           },
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -171,23 +143,25 @@ class CreateUser extends GetView<Authviewmodel> {
                           padding: EdgeInsets.only(left: width * 0.11),
                           child: Obx(
                             () => Checkbox(
-                              value: isCheckedes.value,
+                              value: authviewmodel.isChecked.value,
                               onChanged: (bool? value) {
-                                isCheckedes.value = value ?? false;
-                                if (isCheckedes.value) {
+                                authviewmodel.isChecked.value = value ?? false;
+                                if (authviewmodel.isChecked.value) {
                                   print(
-                                      "Checkbox is checked Login organization");
+                                      "Checkbox is checked: Login organization");
+                                  CheckedOrg = true;
                                 } else {
-                                  // إذا كان False
-                                  print("Checkbox is unchecked Login user");
+                                  print("Checkbox is unchecked: Login user");
+                                  CheckedOrg = false;
                                 }
+                                print("CheckedOrg: $CheckedOrg");
                               },
                             ),
                           ),
                         ),
-                        Text(
-                          "5".tr,
-                          style: const TextStyle(
+                        const Text(
+                          "Login as Organization",
+                          style: TextStyle(
                             fontFamily: 'Arial',
                             fontSize: 12,
                             fontWeight: FontWeight.w700,
@@ -196,22 +170,32 @@ class CreateUser extends GetView<Authviewmodel> {
                           ),
                           textAlign: TextAlign.center,
                         ),
-                        SizedBox(width: width * 0.25),
+                        SizedBox(width: width * 0.15),
                         Container(
                           child: InkWell(
                             onTap: () {
-                              // Action for "Forgot password?"
+                              if (formKey.currentState!.validate()) {
+                                authviewmodel.resetPassword(
+                                    context, emailController.text);
+                              }
                             },
-                            child: Text(
-                              "6".tr,
-                              style: const TextStyle(
-                                fontFamily: 'Arial',
-                                fontSize: 12,
-                                fontWeight: FontWeight.w700,
-                                letterSpacing: -0.04,
-                                color: Colors.white,
+                            child: InkWell(
+                              child: const Text(
+                                "Forgot password?",
+                                style: TextStyle(
+                                  fontFamily: 'Arial',
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w700,
+                                  letterSpacing: -0.04,
+                                  color: Colors.white,
+                                ),
+                                textAlign: TextAlign.center,
                               ),
-                              textAlign: TextAlign.center,
+                              onTap: () async {
+                                await FirebaseAuth.instance
+                                    .sendPasswordResetEmail(
+                                        email: authviewmodel.email);
+                              },
                             ),
                           ),
                         ),
@@ -221,61 +205,126 @@ class CreateUser extends GetView<Authviewmodel> {
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           minimumSize: Size(width * 0.6, height * 0.064),
-                          backgroundColor: const Color(0xFF7fa3ae)),
-                      onPressed: () {
+                          backgroundColor: const Color(0xFF7fa3ae),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20))),
+                      onPressed: () async {
+                        final admin = FirebaseFirestore.instance
+                            .collection('Admin')
+                            .limit(1)
+                            .get();
                         formKey.currentState!.save();
-                        print(
-                            "Email: ${controller.email}, Password: ${controller.password}");
                         if (formKey.currentState!.validate()) {
-                          controller.signUpWithEmailAndPassword();
+                          if (authviewmodel.isChecked.value) {
+                            print("Searching in Org collection");
+                            final result = await FirebaseFirestore.instance
+                                .collection('Orgnaization')
+                                .where('email', isEqualTo: authviewmodel.email)
+                                .get();
+                            if (result.docs.isNotEmpty) {
+                              authviewmodel.signUpWithEmailAndPassword(context);
+                            } else {
+                              print("Organization not found");
+                            }
+                          } else if (authviewmodel.email == admin) {
+                            print("Searching in Admin collection");
+                            final result = await FirebaseFirestore.instance
+                                .collection('Admin')
+                                .where('email', isEqualTo: authviewmodel.email)
+                                .get();
+                            if (result.docs.isNotEmpty) {
+                              authviewmodel.signUpWithEmailAndPassword(context);
+                            } else {
+                              print("Admin not found");
+                            }
+                          } else {
+                            print("Searching in User collection");
+                            final result = await FirebaseFirestore.instance
+                                .collection('Users')
+                                .where('email', isEqualTo: authviewmodel.email)
+                                .get();
+                            if (result.docs.isNotEmpty) {
+                              authviewmodel.signUpWithEmailAndPassword(context);
+                            } else {
+                              print("User not found");
+                            }
+                          }
                         }
                       },
-                      child: Text(
-                        "7".tr,
-                        style: const TextStyle(color: Colors.white),
+                      child: const Text(
+                        "Login",
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
                       ),
                     ),
                     SizedBox(height: height * 0.02),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           minimumSize: Size(width * 0.6, height * 0.064),
-                          backgroundColor: const Color(0xFF949699)),
+                          backgroundColor: const Color(0xFF949699),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20))),
                       onPressed: () {
-                        Get.to(() => Organiston());
-                        // Add account creation logic here
+                        Get.to(() => UserReg());
                       },
-                      child:  Text(
-                        "8".tr,
-                        style: const TextStyle(color: Colors.white),
+                      child: const Text(
+                        "Create User Account",
+                        style: TextStyle(
+                            color: Colors.white, fontStyle: FontStyle.italic),
                       ),
                     ),
                     SizedBox(height: height * 0.02),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          minimumSize: Size(width * 0.6, height * 0.064),
+                          backgroundColor: const Color(0xFF949699),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20))),
+                      onPressed: () {
+                        Get.to(() => OrgReg());
+                      },
+                      child: const Text(
+                        "Create Organistion Account",
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                    ),
                   ],
                 ),
               ),
             ),
-            Align(
-              alignment: Alignment.bottomLeft, // المحاذاة إلى أسفل اليسار
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: InkWell(
-                  onTap: () {
-                    // Add your logic here
-                  },
-                  child: const Text(
-                    "Continue as Guest?",
-                    style: TextStyle(
-                      color: Color(0xFF5b5e63),
-                      fontSize: 18,
-                      fontStyle: FontStyle.italic,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-    
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class CreateAccountButton extends StatelessWidget {
+  final GlobalKey<FormState> formKey;
+  final VoidCallback onPressed;
+
+  const CreateAccountButton({
+    required this.formKey,
+    required this.onPressed,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        minimumSize: const Size(250, 60),
+        backgroundColor: Colors.grey.shade800,
+      ),
+      onPressed: onPressed,
+      child: const Text(
+        "Create Organization Account",
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 15,
+          fontWeight: FontWeight.bold,
+          fontStyle: FontStyle.italic,
         ),
       ),
     );

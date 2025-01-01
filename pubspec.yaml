@@ -31,7 +31,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-
+  
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
@@ -42,16 +42,20 @@ dependencies:
   drop_down_list: ^0.0.8
   firebase_auth: ^5.3.3
   firebase_core: ^3.8.0
-  cloud_firestore: ^5.5.0
+  cloud_firestore: ^5.5.1
   rive: ^0.13.17
-  sqflite: ^2.3.3+1
+  sqflite: ^2.0.0+3
   path: ^1.9.0
   image_picker: ^1.1.2
   supabase_flutter: ^2.8.1
   supabase_auth_ui: ^0.5.4
+  google_maps_flutter: ^2.10.0
+  auto_size_text: ^3.0.0
+  url_launcher: ^6.1.10
+  getwidget: ^4.0.0
+  awesome_snackbar_content: ^0.1.4
   get_storage: ^2.1.1
-  popover: ^0.3.1
-
+ 
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -61,7 +65,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^3.0.0
+  flutter_lints: ^4.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -92,6 +96,13 @@ flutter:
     - assets/images/Image/server-02 (1).png
     - assets/images/Image/globe-01.png
     - assets/images/Image/Filter.png
+    - assets/images/Image/Pin_light.png
+    - assets/images/Image/Rectangle 13.png
+    - assets/images/Image/finger maker.png
+    - assets/images/Image/Polygon 1.png
+    - assets/images/Image/Icon (5).png
+    - assets/images/Image/Polygon 1 (1).png
+    - assets/images/Image/dell_square.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

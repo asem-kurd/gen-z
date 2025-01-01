@@ -1,39 +1,22 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_preview/device_preview.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter_application_99/Getx/Binding.dart';
-import 'package:flutter_application_99/Getx/controllview.dart';
-import 'package:flutter_application_99/Repetitions/grawer__list.dart';
-import 'package:flutter_application_99/SetProfilePicture.dart';
-import 'package:flutter_application_99/controll_home.dart';
-import 'package:flutter_application_99/locale/locale.dart';
-import 'package:flutter_application_99/locale/locale_controller.dart';
-import 'package:flutter_application_99/org_reg.dart';
-import 'package:flutter_application_99/test_add_updata.dart';
-import 'package:flutter_application_99/theme_controller.dart';
-import 'package:flutter_application_99/user_home.dart';
-import 'package:flutter_application_99/Loginuser.dart';
-import 'package:flutter_application_99/filter.dart';
-import 'package:flutter_application_99/user_reg.dart';
-import 'package:flutter_application_99/user_profile.dart';
-import 'package:get/get.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
+import 'package:flutter_application_99/Getx/Binding.dart';
+import 'package:flutter_application_99/Loginuser.dart';
+import 'package:flutter_application_99/Repetitions/theme_service.dart';
+import 'package:flutter_application_99/admin/DisplayOrg_admin.dart';
+import 'package:flutter_application_99/admin/controll_admin.dart';
+import 'package:flutter_application_99/admin/delete_member.dart';
+import 'package:flutter_application_99/controll_home.dart';
+import 'package:flutter_application_99/widget_Org/control_home.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-
-SharedPreferences? sharepref;
-
-class SharedPreferance {}
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Supabase.initialize(
-    url: 'https://ytphxgjkdgxnxruyvabg.supabase.co',
-    anonKey:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl0cGh4Z2prZGd4bnhydXl2YWJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzI5MDA5NzAsImV4cCI6MjA0ODQ3Njk3MH0.w0kLk6umPbLzIeTCBXZkCkkUXCsaCxt7aQ2GCALqxlw',
-  );
-
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: const FirebaseOptions(
@@ -43,11 +26,9 @@ Future<void> main() async {
       projectId: "gen-z2024",
     ),
   );
-  sharepref = await SharedPreferences.getInstance();
-  await GetStorage.init();
   runApp(
     DevicePreview(
-      enabled: !kReleaseMode, // Enable DevicePreview only in debug mode
+      enabled: !kReleaseMode,
       builder: (context) => const MyApp(),
     ),
   );
@@ -56,25 +37,93 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  Future<Widget> determineUserHome() async {
+    final user = FirebaseAuth.instance.currentUser;
+
+    if (user == null) {
+      return CreateUser(); // إذا لم يكن هناك مستخدم مسجل الدخول
+    }
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    try {
+      final orgDoc = await FirebaseFirestore.instance
+          .collection('Orgnaization')
+          .doc(user.uid)
+          .get();
+
+      if (orgDoc.exists) {
+        await prefs.setString('userType', 'organization');
+        return const ControllHomeOrg(); // إذا كان المستخدم في مجموعة Organization
+      }
+
+      // تحقق من أن المستخدم هو في Users
+      final userDoc = await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(user.uid)
+          .get();
+
+      if (userDoc.exists) {
+        // حفظ حالة User في SharedPreferences
+        await prefs.setString('userType', 'User');
+        return const controll_home(); // إذا كان المستخدم في مجموعة Users
+      }
+      final adminDoc = await FirebaseFirestore.instance
+          .collection('Admin')
+          .doc(user.uid)
+          .get();
+      if (adminDoc.exists) {
+        await prefs.setString('userType', 'Admin');
+        return const ControllHomeadmin();
+      }
+    } catch (e) {
+      debugPrint('Error fetching user data: $e');
+    }
+
+    return CreateUser(); // إذا لم يكن في أي من المجموعات
+  }
+
   @override
   Widget build(BuildContext context) {
-    final themeController =
-        Get.put(ThemeController()); // Initialize ThemeController
-    final localeController = Get.put(MyLocaleController());
-
     return GetMaterialApp(
-      locale: localeController.initLanguage,
-      translations: MyLocale(),
-      theme: ThemeData.light(),
-      darkTheme: ThemeData.dark(),
-      // themeMode:
-      //     themeController.currentThemeMode, // Use ThemeController's theme
-      themeMode: ThemeMode.system,
+      title: 'Flutter Demo',
+      theme: ThemeService().lightTheme,
+      darkTheme: ThemeService().darkTheme,
+      themeMode: ThemeService().getThemeMode(),
       debugShowCheckedModeBanner: false,
       initialBinding: InitialBinding(),
-      home: Scaffold(
-        body: CreateUser(),
+      home: FutureBuilder<Widget>(
+        future: determineUserHome(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+          if (snapshot.hasError) {
+            return const Scaffold(
+              body: Center(
+                child: Text('حدث خطأ أثناء تحميل البيانات.'),
+              ),
+            );
+          }
+          if (!snapshot.hasData || snapshot.data == null) {
+            return const Scaffold(
+              body: Center(
+                child: Text('لا توجد بيانات متاحة.'),
+              ),
+            );
+          }
+          return snapshot.data!;
+        },
       ),
+      getPages: [
+        GetPage(name: '/CreateUser', page: () => CreateUser()),
+        GetPage(name: '/controll_home', page: () => const controll_home()),
+        GetPage(name: '/ControllHomeOrg', page: () => const ControllHomeOrg()),
+        GetPage(name: '/ControllHomeadmin', page: () => const ControllHomeadmin()),
+      ],
     );
   }
 }

@@ -4,7 +4,6 @@ import 'package:flutter_application_99/Repetitions/events_foryou.dart';
 import 'package:flutter_application_99/Repetitions/iconbar.dart';
 import 'package:flutter_application_99/repetitions/all_events.dart';
 import 'package:flutter_application_99/widget_event/popular.dart';
-import 'package:get/get.dart';
 
 class EventsScreen extends StatelessWidget {
   const EventsScreen({super.key});
@@ -15,7 +14,6 @@ class EventsScreen extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        appBar: CustomAppBar2(appBarName: "20".tr, toolbarHeight: screenHeight * 0.05),
         body: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -25,28 +23,28 @@ class EventsScreen extends StatelessWidget {
               ],
             ),
           ),
-          child:  DefaultTabController(
+          child: const DefaultTabController(
             initialIndex: 1,
             length: 3,
             child: Column(
               children: [
                 TabBar(
-                  indicatorColor: const Color.fromARGB(255, 33, 40, 113),
-                  labelColor: const Color.fromARGB(255, 33, 40, 113),
-                  unselectedLabelColor: const Color(0xff5A5D62),
+                  indicatorColor: Color.fromARGB(255, 33, 40, 113),
+                  labelColor: Color.fromARGB(255, 33, 40, 113),
+                  unselectedLabelColor: Color(0xff5A5D62),
                   tabs: [
                     Tab(
-                      text: "21".tr,
+                      text: "For you",
                     ),
                     Tab(
-                      text: "22".tr,
+                      text: "All Events",
                     ),
                     Tab(
-                      text: "23".tr,
+                      text: "Popular",
                     ),
                   ],
                 ),
-                const Expanded(
+                Expanded(
                   child: TabBarView(
                     children: [
                       EventsForYou(),

@@ -9,6 +9,7 @@ class UserModel {
   late double age;
   late String role;
   late Map? events;
+  late String gender;
 
   UserModel({
     required this.userId,
@@ -18,9 +19,10 @@ class UserModel {
     required this.phone,
     this.address = "",
     this.avatar, // اجعلها اختيارية
-    required this.age,  
+    required this.age,
     this.role = "user",
     this.events,
+    this.gender = "",
   });
 
   UserModel.fromJson(Map<String, dynamic> map) {
@@ -34,6 +36,7 @@ class UserModel {
     age = map['age'] != null ? map['age'].toDouble() : 0.0;
     role = map['role'] ?? "user";
     events = map['events'];
+    gender = map['gender'] ?? "";
   }
 
   Map<String, dynamic> toJson() {
@@ -48,6 +51,7 @@ class UserModel {
       'age': age,
       'role': role,
       'events': events,
+      'gender': gender,
     };
   }
 }

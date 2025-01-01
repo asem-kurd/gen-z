@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_99/Repetitions/filter_event_buttom.dart';
-import 'package:get/get.dart';
 
 class BtnsSet extends StatelessWidget {
   const BtnsSet({super.key});
@@ -10,18 +9,18 @@ class BtnsSet extends StatelessWidget {
     return Column(children: [
       Container(
         margin: const EdgeInsets.only(right: 20, left: 20),
-        child:  Row(
+        child: const Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             FilterEventsBtn(
-              iconColor: const Color(0xffE4AB56),
+              iconColor: Color(0xffE4AB56),
               icon: Icons.help_outline,
-              btnName: "13".tr,
+              btnName: " Help           ",
             ),
             FilterEventsBtn(
-              iconColor: const Color(0xff4584C5),
+              iconColor: Color(0xff4584C5),
               icon: Icons.school,
-              btnName: "14".tr,
+              btnName: " Education      ",
             ),
           ],
         ),
@@ -31,20 +30,20 @@ class BtnsSet extends StatelessWidget {
       ),
       Container(
         margin: const EdgeInsets.only(right: 20, left: 20),
-        child:  Row(
+        child: const Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             FilterEventsBtn(
-                iconColor: const Color(0xff97CA4F),
+                iconColor: Color(0xff97CA4F),
                 icon: Icons.code,
-                btnName: "15".tr),
-            const SizedBox(
+                btnName: "Technology"),
+            SizedBox(
               width: 2,
             ),
             FilterEventsBtn(
-                iconColor: const Color(0xffC6986E),
+                iconColor: Color(0xffC6986E),
                 icon: Icons.sports_basketball_sharp,
-                btnName: "16".tr),
+                btnName: "Sports            "),
           ],
         ),
       ),
@@ -53,20 +52,17 @@ class BtnsSet extends StatelessWidget {
       ),
       Container(
         margin: const EdgeInsets.only(right: 20, left: 20),
-        child: Row(
+        child: const Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             FilterEventsBtn(
-                iconColor: const Color(0xffB978B3),
+                iconColor: Color(0xffB978B3),
                 icon: Icons.health_and_safety,
-                btnName: "17".tr),
-            const SizedBox(
-              width: 20,
-            ),
+                btnName: "Health        "),
             FilterEventsBtn(
-                iconColor: const Color(0xff176824),
+                iconColor: Color(0xff176824),
                 icon: Icons.grass,
-                btnName: "18".tr),
+                btnName: "Environment "),
           ],
         ),
       ),

@@ -5,8 +5,8 @@ import 'package:get/get.dart';
 double screenWidth = 0;
 double screenHeight = 0;
 
-class HomePage2 extends StatelessWidget {
-  const HomePage2({super.key});
+class drawerorg extends StatelessWidget {
+  const drawerorg({super.key});
 
   @override
   Widget build(BuildContext context) {

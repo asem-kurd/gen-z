@@ -1,12 +1,22 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:io';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_99/Getx/controllview.dart';
-import 'package:flutter_application_99/user_profile.dart';
-import 'package:flutter_application_99/view_model/Home_view_model.dart';
+import 'package:flutter_application_99/Getx/EventController.dart';
+import 'package:flutter_application_99/Repetitions/appbar.dart';
+import 'package:flutter_application_99/Repetitions/grawer__list.dart';
+import 'package:flutter_application_99/Repetitions/theme_service.dart';
+import 'package:flutter_application_99/reg_event_user.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 class Home extends StatelessWidget {
-  const Home({super.key});
+  final EventController eventController = Get.put(EventController());
+
+  // Key for controlling the Scaffold's drawer
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  Home({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,8 +24,10 @@ class Home extends StatelessWidget {
     final double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      key: _scaffoldKey, // Add the key here to control the scaffold's state
       body: Column(
         children: [
+          // Header Section
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
             width: screenWidth,
@@ -39,9 +51,12 @@ class Home extends StatelessWidget {
                   children: [
                     Padding(
                       padding: EdgeInsets.only(top: screenHeight * 0.04),
-                      child: const Text(
-                        "GEN-Z",
-                        style: TextStyle(color: Colors.black, fontSize: 16),
+                      child: IconButton(
+                        icon: const Icon(Icons.menu),
+                        onPressed: () {
+                          _scaffoldKey.currentState
+                              ?.openDrawer(); // Open the drawer when button is pressed
+                        },
                       ),
                     ),
                     Padding(
@@ -59,7 +74,7 @@ class Home extends StatelessWidget {
                   width: screenWidth * 0.83,
                   child: TextFormField(
                     decoration: InputDecoration(
-                      hintText: "9".tr,
+                      hintText: "Search",
                       hintStyle: const TextStyle(color: Color(0xffb2b0ab)),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20),
@@ -73,13 +88,13 @@ class Home extends StatelessWidget {
             ),
           ),
           // Special Section
-          Padding(
+          const Padding(
             padding: EdgeInsets.all(20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "10".tr,
+                  "#SpecialForYou",
                   style: TextStyle(
                     fontSize: 18,
                     color: Colors.black,
@@ -88,70 +103,80 @@ class Home extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "12".tr,
+                  "See All",
                   style: TextStyle(fontSize: 13, color: Colors.grey),
                 ),
               ],
             ),
           ),
+          // List of Events
           SizedBox(
             width: screenWidth * 0.9,
             height: screenHeight * 0.2,
-            child: ListView(
-              physics: const NeverScrollableScrollPhysics(), // إلغاء التمرير
-              scrollDirection: Axis.horizontal,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: InkWell(
-                    onTap: () {
-                      print("Image pressed");
-                    },
-                    child: Container(
-                      width: screenWidth * 0.8,
-                      height: screenHeight * 0.2,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        image: const DecorationImage(
-                          image: AssetImage(
-                              "assets/images/Image/Logo.png"), // Ensure images are added to pubspec.yaml
-                          fit: BoxFit.cover,
+            child: Obx(() {
+              if (eventController.events.isEmpty) {
+                return const Center(
+                  child: Text('No events at this time.'),
+                );
+              }
+              return ListView.builder(
+                itemCount: eventController.events.length,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) {
+                  final event = eventController.events[index];
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: InkWell(
+                      onTap: () {
+                        var eventid = eventController.events
+                            .elementAt(index)
+                            .eventid
+                            .toString();
+                        print(eventid);
+                        Get.to(const EventDetails(), arguments: eventid);
+                      },
+                      child: Container(
+                        width: screenWidth * 0.8,
+                        height: screenHeight * 0.2,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          // image: DecorationImage(
+                          //  // image: NetworkImage(event.imageUrl),
+                          //   fit: BoxFit.cover,
+                          // ),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 6),
+                              color: Colors.grey,
+                              child: Text(
+                                event.title,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: InkWell(
-                    onTap: () {
-                      print("Image pressed");
-                    },
-                    child: Container(
-                      width: screenWidth * 0.8,
-                      height: screenHeight * 0.2,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        image: const DecorationImage(
-                          image: AssetImage(
-                              "assets/images/Image/Logo.png"), // Ensure images are added to pubspec.yaml
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+                  );
+                },
+              );
+            }),
           ),
           // Upcoming Events Section
-          Padding(
+          const Padding(
             padding: EdgeInsets.all(20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "11".tr,
+                  "#Upcoming Events",
                   style: TextStyle(
                     fontSize: 18,
                     color: Colors.black,
@@ -160,63 +185,125 @@ class Home extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "12".tr,
+                  "See All",
                   style: TextStyle(fontSize: 13, color: Colors.grey),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(
-            width: screenWidth * 0.9,
-            height: screenHeight * 0.2,
-            child: ListView(
-              physics: const NeverScrollableScrollPhysics(), // إلغاء التمرير
-              scrollDirection: Axis.horizontal,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: InkWell(
-                    onTap: () {
-                      print("Image pressed");
-                    },
-                    child: Container(
-                      width: screenWidth * 0.8,
-                      height: screenHeight * 0.2,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        image: const DecorationImage(
-                          image: AssetImage(
-                              "assets/images/Image/Logo.png"), // Ensure images are added to pubspec.yaml
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: InkWell(
-                    onTap: () {
-                      print("Image pressed");
-                    },
-                    child: Container(
-                      width: screenWidth * 0.8,
-                      height: screenHeight * 0.2,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        image: const DecorationImage(
-                          image: AssetImage(
-                              "assets/images/Image/Logo.png"), // Ensure images are added to pubspec.yaml
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                  ),
                 ),
               ],
             ),
           ),
         ],
+      ),
+      drawer: Drawer(
+        child: ListView(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'GEN-Z',
+                  style: TextStyle(
+                      color: Color(0xFF42454b),
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Arial'),
+                ),
+                const SizedBox(
+                  width: 190,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    print('Share button pressed');
+                  },
+                  child: const Image(
+                    image: AssetImage('assets/images/Image/share.png'),
+                  ),
+                ),
+              ],
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Divider(
+                  thickness: 1,
+                  color: Colors.grey,
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                ListTile(
+                  leading: Image.asset('assets/images/Image/Icon (3).png'),
+                  title: const Text('Profile',
+                      style: TextStyle(color: Color(0xFF1B1F26), fontSize: 16)),
+                  onTap: () {
+                    Navigator.pop(context); // Close the drawer
+                  },
+                ),
+                ListTile(
+                  leading: Image.asset('assets/images/Image/Icon (4).png'),
+                  title: const Text('Home',
+                      style: TextStyle(color: Color(0xFF1B1F26), fontSize: 16)),
+                  onTap: () {
+                    Navigator.pop(context); // Close the drawer
+                  },
+                ),
+                ListTile(
+                  leading: Image.asset('assets/images/Image/Date_fill@3x.png'),
+                  title: const Text('Events',
+                      style: TextStyle(color: Color(0xFF1B1F26), fontSize: 16)),
+                  onTap: () {
+                    Navigator.pop(context); // Close the drawer
+                  },
+                ),
+                ListTile(
+                  leading: Image.asset('assets/images/Image/server-02 (1).png'),
+                  title: const Text('Organization',
+                      style: TextStyle(color: Color(0xFF1B1F26), fontSize: 16)),
+                  onTap: () {
+                    Navigator.pop(context); // Close the drawer
+                  },
+                ),
+                ListTile(
+                  leading: Image.asset('assets/images/Image/globe-01.png'),
+                  title: const Text('DarkMode',
+                      style: TextStyle(color: Color(0xFF1B1F26), fontSize: 16)),
+                  onTap: () {
+                    ThemeService().changeTheme();
+                  },
+                ),
+                ListTile(
+                  leading: Image.asset('assets/images/Image/Filter.png'),
+                  title: const Text('Filter events',
+                      style: TextStyle(color: Color(0xFF1B1F26), fontSize: 16)),
+                  onTap: () {
+                    Navigator.pop(context); // Close the drawer
+                  },
+                ),
+                const Divider(thickness: 1, color: Colors.grey),
+                ListTile(
+                  leading: Image.asset('assets/images/Image/Icon (1).png'),
+                  title: const Text('Settings',
+                      style: TextStyle(color: Color(0xFF1B1F26), fontSize: 16)),
+                  onTap: () {
+                    Navigator.pop(context); // Close the drawer
+                  },
+                ),
+                ListTile(
+                  leading: Image.asset('assets/images/Image/Icon (2).png'),
+                  title: const Text('Logout',
+                      style: TextStyle(color: Color(0xFF1B1F26), fontSize: 16)),
+                  onTap: () async {
+                    await FirebaseAuth.instance.signOut();
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                      '/CreateUser',
+                      (route) => false,
+                    );
+                  },
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

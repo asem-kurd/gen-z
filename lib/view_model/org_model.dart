@@ -6,8 +6,10 @@ class Firestoreorg {
   late double phone;
   late String address;
   String? avatar; // اجعل الصورة اختيارية باستخدام String
-  late String role ;
+  late String role;
   late String url;
+  late Map<String, dynamic> subscribedUsers;
+  //  late String defaultEventId;
   //late String eventsIds;
 
   Firestoreorg({
@@ -20,7 +22,8 @@ class Firestoreorg {
     required this.url,
     this.avatar, // اجعلها اختيارية
     this.role = "org",
-
+    this.subscribedUsers = const {},
+    // this.defaultEventId = "",
     //this eventsIds
   });
 
@@ -33,7 +36,9 @@ class Firestoreorg {
     address = map['address'] ?? "";
     avatar = map['avatar']; // قد تكون null
     url = map['url'];
-    role=map['role'];
+    role = map['role'];
+    subscribedUsers = map['subscribedUsers'] ?? {};
+    //   defaultEventId = map['defaultEventId'];
   }
 
   Map<String, dynamic> toJson() {
@@ -46,7 +51,9 @@ class Firestoreorg {
       'address': address,
       'avatar': avatar, // قد تكون null عند الإرسال
       'role': role,
-      'url': url
+      'url': url,
+      'subscribedUsers': subscribedUsers,
+      // 'defaultEventId': defaultEventId
     };
   }
 }
