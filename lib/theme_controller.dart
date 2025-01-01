@@ -7,6 +7,8 @@ class ThemeController extends GetxController {
 
   late ThemeMode currentThemeMode;
 
+  static var to;
+
   @override
   void onInit() {
     super.onInit();

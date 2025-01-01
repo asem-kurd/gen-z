@@ -52,6 +52,7 @@ Future<void> main() async {
     ),
   );
 }
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -66,8 +67,9 @@ class MyApp extends StatelessWidget {
       translations: MyLocale(),
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
-      themeMode:
-          themeController.currentThemeMode, // Use ThemeController's theme
+      // themeMode:
+      //     themeController.currentThemeMode, // Use ThemeController's theme
+      themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
       initialBinding: InitialBinding(),
       home: Scaffold(

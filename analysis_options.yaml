@@ -10,7 +10,7 @@
 analyzer:
   errors:
     non_constant_identifier_names: ignore
-    prefer_const_constructors: ignore ignore ignore
+    prefer_const_constructors: ignore ignore ignore ignore
     unused_import: ignore
 include: package:flutter_lints/flutter.yaml
 
