@@ -27,7 +27,6 @@ class CustomAppBar1 extends StatelessWidget {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
-                        color: Colors.black,
                       ),
                     ),
                     Divider(
@@ -44,7 +43,9 @@ class CustomAppBar1 extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
                 child: const Row(
                   children: [
-                    Icon(Icons.person, color: Colors.black),
+                    Icon(
+                      Icons.person,
+                    ),
                     SizedBox(width: 16), // Space between icon and text
                     Text("Profile"),
                   ],
@@ -58,7 +59,9 @@ class CustomAppBar1 extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
                 child: const Row(
                   children: [
-                    Icon(Icons.home, color: Colors.black),
+                    Icon(
+                      Icons.home,
+                    ),
                     SizedBox(width: 16), // Space between icon and text
                     Text("Home"),
                   ],
@@ -74,7 +77,9 @@ class CustomAppBar1 extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
                 child: const Row(
                   children: [
-                    Icon(Icons.dark_mode, color: Colors.black),
+                    Icon(
+                      Icons.dark_mode,
+                    ),
                     SizedBox(width: 16), // Space between icon and text
                     Text("Dark Theme"),
                   ],
@@ -88,7 +93,9 @@ class CustomAppBar1 extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        Icon(Icons.filter_alt, color: Colors.black),
+                        Icon(
+                          Icons.filter_alt,
+                        ),
                         SizedBox(width: 16), // Space between icon and text
                         Text("Filter events"),
                       ],
@@ -107,7 +114,9 @@ class CustomAppBar1 extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
                 child: const Row(
                   children: [
-                    Icon(Icons.settings, color: Colors.black),
+                    Icon(
+                      Icons.settings,
+                    ),
                     SizedBox(width: 16), // Space between icon and text
                     Text("Settings"),
                   ],
@@ -121,7 +130,9 @@ class CustomAppBar1 extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
                 child: const Row(
                   children: [
-                    Icon(Icons.logout, color: Colors.black),
+                    Icon(
+                      Icons.logout,
+                    ),
                     SizedBox(width: 16), // Space between icon and text
                     Text("Log out"),
                   ],

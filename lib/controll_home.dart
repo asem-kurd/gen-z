@@ -5,6 +5,10 @@ import 'package:flutter_application_99/Loginuser.dart';
 import 'package:flutter_application_99/view_model/Home_view_model.dart';
 import 'package:get/get.dart';
 
+import 'package:flutter_application_99/Repetitions/theme_service.dart';
+
+import 'admin/controll_admin.dart';
+
 class controll_home extends StatelessWidget {
   const controll_home({super.key});
 
@@ -13,6 +17,7 @@ class controll_home extends StatelessWidget {
     return GetBuilder<HomeViewModel>(
       init: HomeViewModel(),
       builder: (controller) => Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.primary,
         body: controller.currentScreen,
         bottomNavigationBar: bottomNavigationBar(),
       ),
@@ -91,8 +96,11 @@ Widget bottomNavigationBar() {
             .changeSelectedValue(index); // تحديث الشاشة عند الضغط على العنصر
       },
       elevation: 0,
+
+      //change the color of bottom nav bar based on theme dar
       selectedItemColor: Colors.black,
-      backgroundColor: Colors.transparent, // التأكد من أن التدرج يظهر
+      // backgroundColor: Colors.transparent,
+      // التأكد من أن التدرج يظهر
     ),
   );
 }

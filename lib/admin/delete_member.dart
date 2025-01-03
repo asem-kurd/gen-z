@@ -9,7 +9,7 @@ class MemberScreen extends StatelessWidget {
   final EventController controller = Get.put(EventController());
   final eventdata = <EventModel>[].obs;
 
-  const MemberScreen({super.key}); // مراقبة قائمة الأحداث
+   MemberScreen({super.key}); // مراقبة قائمة الأحداث
 
   @override
   Widget build(BuildContext context) {

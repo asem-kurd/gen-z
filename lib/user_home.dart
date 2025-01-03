@@ -1,12 +1,13 @@
 import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_99/Getx/EventController.dart';
 import 'package:flutter_application_99/Repetitions/appbar.dart';
 import 'package:flutter_application_99/Repetitions/grawer__list.dart';
 import 'package:flutter_application_99/Repetitions/theme_service.dart';
+import 'package:flutter_application_99/filter.dart';
 import 'package:flutter_application_99/reg_event_user.dart';
+import 'package:flutter_application_99/user_settings.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -24,6 +25,8 @@ class Home extends StatelessWidget {
     final double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.primary,
+
       key: _scaffoldKey, // Add the key here to control the scaffold's state
       body: Column(
         children: [
@@ -35,9 +38,9 @@ class Home extends StatelessWidget {
             decoration: BoxDecoration(
               gradient: const LinearGradient(
                 colors: [
-                  Color.fromARGB(71, 136, 124, 176),
-                  Color.fromARGB(48, 194, 130, 27),
-                  Color.fromARGB(55, 251, 134, 0),
+                  Color.fromARGB(70, 221, 219, 224),
+                  Color.fromARGB(47, 104, 102, 98),
+                  Color.fromARGB(55, 171, 153, 132),
                 ],
                 begin: Alignment.topRight,
                 end: Alignment.bottomLeft,
@@ -63,8 +66,9 @@ class Home extends StatelessWidget {
                       padding: EdgeInsets.only(top: screenHeight * 0.04),
                       child: InkWell(
                         onTap: () {},
-                        child: const Icon(Icons.notifications,
-                            color: Color(0xff575a60)),
+                        child: const Icon(
+                          Icons.notifications,
+                        ),
                       ),
                     ),
                   ],
@@ -87,26 +91,33 @@ class Home extends StatelessWidget {
               ],
             ),
           ),
+
           // Special Section
-          const Padding(
-            padding: EdgeInsets.all(20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "#SpecialForYou",
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: "Arial",
+          //
+
+          Container(
+            // change background color depend on theme
+            // color:
+            child: const Padding(
+              padding: EdgeInsets.all(20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "#SpecialForYou",
+                    style: TextStyle(
+                      fontSize: 18,
+                      // color: Theme.of(context).colorScheme.onPrimary,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: "Arial",
+                    ),
                   ),
-                ),
-                Text(
-                  "See All",
-                  style: TextStyle(fontSize: 13, color: Colors.grey),
-                ),
-              ],
+                  Text(
+                    "See All",
+                    style: TextStyle(fontSize: 13, color: Colors.grey),
+                  ),
+                ],
+              ),
             ),
           ),
           // List of Events
@@ -169,17 +180,15 @@ class Home extends StatelessWidget {
               );
             }),
           ),
-          // Upcoming Events Section
           const Padding(
             padding: EdgeInsets.all(20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "#Upcoming Events",
+                  "#News",
                   style: TextStyle(
                     fontSize: 18,
-                    color: Colors.black,
                     fontWeight: FontWeight.bold,
                     fontFamily: "Arial",
                   ),
@@ -203,7 +212,6 @@ class Home extends StatelessWidget {
                 const Text(
                   'GEN-Z',
                   style: TextStyle(
-                      color: Color(0xFF42454b),
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                       fontFamily: 'Arial'),
@@ -215,8 +223,8 @@ class Home extends StatelessWidget {
                   onTap: () {
                     print('Share button pressed');
                   },
-                  child: const Image(
-                    image: AssetImage('assets/images/Image/share.png'),
+                  child: const Icon(
+                    Icons.share,
                   ),
                 ),
               ],
@@ -232,66 +240,30 @@ class Home extends StatelessWidget {
                   height: 30,
                 ),
                 ListTile(
-                  leading: Image.asset('assets/images/Image/Icon (3).png'),
-                  title: const Text('Profile',
-                      style: TextStyle(color: Color(0xFF1B1F26), fontSize: 16)),
-                  onTap: () {
-                    Navigator.pop(context); // Close the drawer
-                  },
-                ),
-                ListTile(
-                  leading: Image.asset('assets/images/Image/Icon (4).png'),
-                  title: const Text('Home',
-                      style: TextStyle(color: Color(0xFF1B1F26), fontSize: 16)),
-                  onTap: () {
-                    Navigator.pop(context); // Close the drawer
-                  },
-                ),
-                ListTile(
-                  leading: Image.asset('assets/images/Image/Date_fill@3x.png'),
-                  title: const Text('Events',
-                      style: TextStyle(color: Color(0xFF1B1F26), fontSize: 16)),
-                  onTap: () {
-                    Navigator.pop(context); // Close the drawer
-                  },
-                ),
-                ListTile(
-                  leading: Image.asset('assets/images/Image/server-02 (1).png'),
-                  title: const Text('Organization',
-                      style: TextStyle(color: Color(0xFF1B1F26), fontSize: 16)),
-                  onTap: () {
-                    Navigator.pop(context); // Close the drawer
-                  },
-                ),
-                ListTile(
-                  leading: Image.asset('assets/images/Image/globe-01.png'),
-                  title: const Text('DarkMode',
-                      style: TextStyle(color: Color(0xFF1B1F26), fontSize: 16)),
-                  onTap: () {
-                    ThemeService().changeTheme();
-                  },
-                ),
-                ListTile(
-                  leading: Image.asset('assets/images/Image/Filter.png'),
+                  leading: const Icon(
+                    Icons.filter_alt,
+                  ),
                   title: const Text('Filter events',
-                      style: TextStyle(color: Color(0xFF1B1F26), fontSize: 16)),
+                      style: TextStyle(fontSize: 16)),
                   onTap: () {
-                    Navigator.pop(context); // Close the drawer
+                    Get.to(() => FilterEventsScreen()); // Close the drawer
                   },
                 ),
                 const Divider(thickness: 1, color: Colors.grey),
                 ListTile(
-                  leading: Image.asset('assets/images/Image/Icon (1).png'),
-                  title: const Text('Settings',
-                      style: TextStyle(color: Color(0xFF1B1F26), fontSize: 16)),
+                  leading: const Icon(
+                    Icons.settings,
+                  ),
+                  title: const Text('Settings', style: TextStyle(fontSize: 16)),
                   onTap: () {
-                    Navigator.pop(context); // Close the drawer
+                    Get.to(() => UserSettings()); // Close the drawer
                   },
                 ),
                 ListTile(
-                  leading: Image.asset('assets/images/Image/Icon (2).png'),
-                  title: const Text('Logout',
-                      style: TextStyle(color: Color(0xFF1B1F26), fontSize: 16)),
+                  leading: const Icon(
+                    Icons.logout,
+                  ),
+                  title: const Text('Logout', style: TextStyle(fontSize: 16)),
                   onTap: () async {
                     await FirebaseAuth.instance.signOut();
                     Navigator.of(context).pushNamedAndRemoveUntil(
