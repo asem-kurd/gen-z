@@ -203,6 +203,7 @@ class Home extends StatelessWidget {
         ],
       ),
       drawer: Drawer(
+        backgroundColor: Theme.of(context).colorScheme.primary,
         child: ListView(
           children: [
             Row(
@@ -250,15 +251,15 @@ class Home extends StatelessWidget {
                   },
                 ),
                 const Divider(thickness: 1, color: Colors.grey),
-                ListTile(
-                  leading: const Icon(
-                    Icons.settings,
-                  ),
-                  title: const Text('Settings', style: TextStyle(fontSize: 16)),
-                  onTap: () {
-                    Get.to(() => UserSettings()); // Close the drawer
-                  },
-                ),
+                // ListTile(
+                //   leading: const Icon(
+                //     Icons.settings,
+                //   ),
+                //   title: const Text('Settings', style: TextStyle(fontSize: 16)),
+                //   onTap: () {
+                //     Get.to(() => UserSettings()); // Close the drawer
+                //   },
+                // ),
                 ListTile(
                   leading: const Icon(
                     Icons.logout,

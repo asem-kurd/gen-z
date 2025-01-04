@@ -16,9 +16,9 @@ class EventsScreen extends StatelessWidget {
       home: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.primary,
         body: Container(
-          child: Padding(
-            padding: const EdgeInsets.only(top: 50),
-            child: const DefaultTabController(
+          child: const Padding(
+            padding: EdgeInsets.only(top: 50),
+            child: DefaultTabController(
               initialIndex: 1,
               length: 3,
               child: Column(

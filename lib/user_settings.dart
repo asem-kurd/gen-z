@@ -1,101 +1,163 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_application_99/Repetitions/appbar2.dart';
-import 'package:path/path.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 
 class UserSettingsController extends GetxController {
-  final name = "Rama".obs;
-  final age = "20".obs;
-  final email = "ramannjh@gmail.com".obs;
-  final password = "".obs;
-  final selectedLanguage = "English".obs;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  final name = RxString("");
+  final age = RxString("");
+  // final email = RxString("ramannjh@gmail.com");
+  // final password = RxString("");
+  final selectedLanguage = RxString("English");
+
+  @override
+  void onInit() {
+    super.onInit();
+    fetchUserData();
+  }
+
+  Future<void> fetchUserData() async {
+    try {
+      User? currentUser = _auth.currentUser;
+      if (currentUser != null) {
+        String uid = currentUser.uid;
+        DocumentSnapshot userDoc =
+            await _firestore.collection('Users').doc(uid).get();
+
+        if (userDoc.exists) {
+          name.value = userDoc['name'] as String? ?? "";
+          age.value = userDoc['age'] as String? ?? "";
+          // email.value = userDoc['email'] as String? ?? "";
+          // selectedLanguage.value = userDoc['language'] as String? ?? "English";
+        }
+      } else {
+        Get.snackbar('Error', 'No user is currently logged in.',
+            snackPosition: SnackPosition.BOTTOM);
+      }
+    } catch (e) {
+      Get.snackbar('Error', 'Error fetching user data: $e',
+          snackPosition: SnackPosition.BOTTOM);
+    }
+  }
+
+  Future<void> updateUserData() async {
+    try {
+      User? currentUser = _auth.currentUser;
+      if (currentUser != null) {
+        String uid = currentUser.uid;
+        await _firestore.collection('Users').doc(uid).update({
+          'name': name.value,
+          'age': age.value,
+        });
+
+        Get.snackbar('Success', 'Profile updated successfully',
+            snackPosition: SnackPosition.BOTTOM);
+      }
+    } catch (e) {
+      Get.snackbar('Error', 'Error updating user data: $e',
+          snackPosition: SnackPosition.BOTTOM);
+    }
+  }
 
   void logout() async {
-    await FirebaseAuth.instance.signOut();
-    Get.offAllNamed('/CreateUser');
+    try {
+      await _auth.signOut();
+      Get.offAllNamed('/CreateUser');
+    } catch (e) {
+      Get.snackbar('Error', 'Error signing out: $e',
+          snackPosition: SnackPosition.BOTTOM);
+    }
   }
 }
 
-class UserSettings extends StatelessWidget {
-  final UserSettingsController controller = Get.put(UserSettingsController());
-
-  UserSettings({super.key});
+class UserSettings extends GetView<UserSettingsController> {
+  const UserSettings({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(UserSettingsController());
     final double screenWidth = MediaQuery.of(context).size.width;
     final double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primary,
-      appBar: CustomAppBar2(
-        toolbarHeight: screenHeight * 0.1,
-        appBarName: "Settings",
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        title: const Text(
+          "Settings",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 20),
+            child: InkWell(
+              onTap: controller.updateUserData,
+              child: const Text(
+                "Save",
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: screenWidth * 0.05,
           vertical: screenHeight * 0.02,
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: ListView(
           children: [
-            TextField(
+            SettingsTextField(
               label: "Name",
               value: controller.name,
             ),
-            TextField(
+            SettingsTextField(
               label: "Age",
               value: controller.age,
             ),
-            TextField(
-              label: "Email",
-              value: controller.email,
-            ),
-            TextField(
-              label: "Password",
-              value: controller.password,
-              isPassword: true,
-            ),
+            // SettingsTextField(
+            //   label: "Email",
+            //   value: controller.email,
+            //   disabledBorder: true,
+            // ),
+            // SettingsTextField(
+            //   label: "Password",
+            //   value: controller.password,
+            //   isPassword: true,
+            // ),
             LanguageField(
               label: "Language",
               value: controller.selectedLanguage,
             ),
-            ListTile(
-              leading: Text(
-                "Dark Mode",
-                style: TextStyle(
-                  fontSize: screenWidth * 0.04,
-                ),
-              ),
-              trailing: Switch(
-                value: Get.isDarkMode,
-                onChanged: (value) {
-                  Get.changeThemeMode(value ? ThemeMode.dark : ThemeMode.light);
-                },
-              ),
-            ),
-            const Spacer(),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.grey[800],
-                  foregroundColor: Colors.white,
-                  padding: EdgeInsets.symmetric(
-                    vertical: screenHeight * 0.015,
-                    horizontal: screenWidth * 0.04,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Dark Mode",
+                  style: TextStyle(
+                    fontSize: screenWidth * 0.06,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                onPressed: controller.logout,
-                icon: const Icon(Icons.logout),
-                label: const Text("Log out"),
-              ),
+                Switch(
+                  focusColor: const Color.fromARGB(255, 181, 125, 217),
+                  value: Get.isDarkMode,
+                  onChanged: (value) {
+                    Get.changeThemeMode(
+                        value ? ThemeMode.dark : ThemeMode.light);
+                  },
+                ),
+              ],
             ),
+
+            const SizedBox(height: 20),
           ],
         ),
       ),
@@ -103,21 +165,24 @@ class UserSettings extends StatelessWidget {
   }
 }
 
-class TextField extends StatelessWidget {
+class SettingsTextField extends StatelessWidget {
   final String label;
   final RxString value;
   final bool isPassword;
+  final bool disabledBorder;
 
-  const TextField({
+  const SettingsTextField({
     super.key,
     required this.label,
     required this.value,
+    this.disabledBorder = false,
     this.isPassword = false,
   });
 
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
+    const Color borderColor = Color.fromARGB(255, 181, 125, 217);
 
     return Padding(
       padding: EdgeInsets.symmetric(vertical: screenWidth * 0.02),
@@ -127,8 +192,8 @@ class TextField extends StatelessWidget {
           Text(
             label,
             style: TextStyle(
-              fontSize: screenWidth * 0.04,
-              color: Colors.grey,
+              fontSize: screenWidth * 0.06,
+              fontWeight: FontWeight.bold,
             ),
           ),
           const SizedBox(height: 4),
@@ -136,10 +201,20 @@ class TextField extends StatelessWidget {
             () => TextFormField(
               initialValue: value.value,
               obscureText: isPassword,
+              enabled: !disabledBorder,
               onChanged: (newValue) => value.value = newValue,
               decoration: InputDecoration(
-                border: const UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey),
+                border: UnderlineInputBorder(
+                  borderSide: BorderSide(color: borderColor),
+                ),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: borderColor),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: borderColor, width: 2),
+                ),
+                disabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: borderColor.withOpacity(0.5)),
                 ),
                 contentPadding: EdgeInsets.symmetric(
                   vertical: screenWidth * 0.035,
@@ -166,6 +241,7 @@ class LanguageField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
+    const Color borderColor = Color(0xFF918C94);
 
     return Padding(
       padding: EdgeInsets.symmetric(vertical: screenWidth * 0.02),
@@ -175,13 +251,14 @@ class LanguageField extends StatelessWidget {
           Text(
             label,
             style: TextStyle(
-              fontSize: screenWidth * 0.04,
-              color: Colors.grey,
+              fontSize: screenWidth * 0.06,
+              fontWeight: FontWeight.bold,
             ),
           ),
           const SizedBox(height: 4),
           Obx(
             () => DropdownButtonFormField<String>(
+              focusColor: const Color.fromARGB(255, 181, 125, 217),
               value: value.value,
               items: const [
                 DropdownMenuItem(
@@ -197,8 +274,14 @@ class LanguageField extends StatelessWidget {
                 if (newValue != null) value.value = newValue;
               },
               decoration: InputDecoration(
-                border: const UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey),
+                border: UnderlineInputBorder(
+                  borderSide: BorderSide(color: borderColor),
+                ),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: borderColor),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: borderColor, width: 2),
                 ),
                 contentPadding: EdgeInsets.symmetric(
                   vertical: screenWidth * 0.035,

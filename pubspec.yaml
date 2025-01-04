@@ -81,29 +81,12 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/images/Image/Calendar_duotone_line.png
-    - assets/images/Image/Logo.png
-    - assets/images/Image/home-05.png
-    - assets/images/Image/server-02.png
-    - assets/images/Image/User_scan_duotone_line.png
-    - assets/images/Image/Filter.png
-    - assets/images/Image/share.png
-    - assets/images/Image/globe.png
-    - assets/images/Image/Icon (1).png
-    - assets/images/Image/Icon (2).png
-    - assets/images/Image/Icon (3).png
-    - assets/images/Image/Icon (4).png
-    - assets/images/Image/Date_fill@3x.png
-    - assets/images/Image/server-02 (1).png
-    - assets/images/Image/globe-01.png
-    - assets/images/Image/Filter.png
-    - assets/images/Image/Pin_light.png
-    - assets/images/Image/Rectangle 13.png
-    - assets/images/Image/finger maker.png
-    - assets/images/Image/Polygon 1.png
-    - assets/images/Image/Icon (5).png
-    - assets/images/Image/Polygon 1 (1).png
-    - assets/images/Image/dell_square.png
+    - assets/images/avatar/
+    - assets/images/Image/
+    - assets/images/numbers/
+    - assets/images/numbers/
+    - assets/images/family_members/
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

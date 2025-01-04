@@ -15,24 +15,28 @@ class DisplayOrg extends StatelessWidget {
   Widget build(BuildContext context) {
     final double screenHeight = MediaQuery.of(context).size.height;
     final double screenWidth = MediaQuery.of(context).size.width;
+    final theme = Theme.of(context);
+
+    final textColor = theme.colorScheme.onSurface;
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: Container(
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        body: SizedBox(
           width: double.infinity,
           height: double.infinity,
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Color.fromRGBO(136, 124, 176, 0.17),
-                Color.fromRGBO(194, 131, 27, 0.15),
-                Color.fromRGBO(251, 133, 0, 0.18),
-              ],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
-          ),
+          // decoration: const BoxDecoration(
+          //   gradient: LinearGradient(
+          //     colors: [
+          //       Color.fromRGBO(136, 124, 176, 0.17),
+          //       Color.fromRGBO(194, 131, 27, 0.15),
+          //       Color.fromRGBO(251, 133, 0, 0.18),
+          //     ],
+          //     begin: Alignment.topCenter,
+          //     end: Alignment.bottomCenter,
+          //   ),
+          // ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -41,11 +45,11 @@ class DisplayOrg extends StatelessWidget {
                   top: screenHeight * 0.15,
                   left: screenWidth * 0.1,
                 ),
-                child: const Text(
+                child: Text(
                   'Organisation',
                   style: TextStyle(
                     fontSize: 35,
-                    color: Color(0xFF78797d),
+                    color: textColor,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -55,8 +59,14 @@ class DisplayOrg extends StatelessWidget {
                     padding: const EdgeInsets.all(16.0),
                     child: Obx(() {
                       if (myorg.myorganization.isEmpty) {
-                        return const Center(
-                          child: Text('No organizations at this time'),
+                        return Center(
+                          child: Text(
+                            'No organizations at this time',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: textColor,
+                            ),
+                          ),
                         );
                       }
                       return ListView.builder(
