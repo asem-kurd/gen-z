@@ -9,40 +9,44 @@ class CustomAppBar2 extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    backgroundColor:
-    Theme.of(context).colorScheme.primary;
-
     final screenHeight = MediaQuery.sizeOf(context).height;
     // final screenWidth = MediaQuery.sizeOf(context).width;
     return AppBar(
       titleSpacing: 1,
-      backgroundColor: Theme.of(context).colorScheme.primary,
+      backgroundColor: Colors.transparent,
       elevation: 0,
       toolbarHeight: toolbarHeight,
+      leading: IconButton(
+        onPressed: () {},
+        icon: const Icon(
+          Icons.menu,
+          size: 30,
+        ),
+        tooltip: 'Open Menu',
+        color: const Color(0xff65625E),
+      ),
       title: Text(
         appBarName,
-        style: const TextStyle(),
+        style: const TextStyle(
+          color: Color(0xff65625E),
+        ),
       ),
       actions: [
-        //text clicabel Save
-        Padding(
-          padding: const EdgeInsets.only(right: 20),
-          child: InkWell(
-            onTap: () {},
-            child: const Text(
-              "Save",
-              style: TextStyle(
-                fontSize: 20,
-              ),
-            ),
+        IconButton(
+          onPressed: () {},
+          icon: const Icon(
+            Icons.equalizer_rounded,
+            size: 30,
+            color: Color(0xff65625E),
           ),
+          tooltip: 'Filteration',
         ),
       ],
       flexibleSpace: Padding(
-        padding: EdgeInsets.only(top: screenHeight * 0.15),
+        padding: EdgeInsets.only(top: screenHeight * 0.1),
         child: const Divider(
           height: 50,
-          thickness: 1,
+          thickness: 2,
         ),
       ),
     );

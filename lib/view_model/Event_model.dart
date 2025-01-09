@@ -16,6 +16,9 @@ class EventModel {
   final List<String> image_url; // Use List instead of Array
   String eventid;
   String eventLocation;
+  String link;
+  int registerd_user_reg;
+  List registered_users_list;
 
   // تعيين القيم الافتراضية
   EventModel({
@@ -32,6 +35,9 @@ class EventModel {
     required this.phone,
     required this.upload_image,
     this.eventLocation = '',
+    this.link = '',
+    this.registerd_user_reg = 0,
+    this.registered_users_list = const [],
   });
 
   factory EventModel.fromJson(Map<String, dynamic> map) {
@@ -51,6 +57,10 @@ class EventModel {
       phone: map['phone'] ?? 0,
       upload_image: map['upload_image'] ?? '',
       eventLocation: map['eventLocation'] ?? '',
+      link: map['link'] ?? '',
+      registerd_user_reg: map['registerd_user_reg'] ?? 0,
+      registered_users_list:
+          List<String>.from(map['registered_users_list'] ?? []),
     );
   }
 
@@ -69,6 +79,9 @@ class EventModel {
       'phone': phone,
       'upload_image': upload_image,
       'eventLocation': eventLocation,
+      'link': link,
+      'registerd_user_reg': registerd_user_reg,
+      'registered_users_list': registered_users_list,
     };
   }
 

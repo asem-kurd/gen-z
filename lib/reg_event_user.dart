@@ -3,16 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_99/controll_home.dart';
-import 'package:flutter_application_99/service/event.dart';
-import 'package:flutter_application_99/service/firestoreOrg.dart';
-import 'package:flutter_application_99/taple_firebase/user_taple.dart';
-import 'package:flutter_application_99/view_model/Event_model.dart';
-import 'package:flutter_application_99/view_model/org_model.dart';
 import 'package:get/get.dart';
 import 'dart:ui' as ui;
-
-import 'package:http/http.dart';
-import 'package:rive/rive.dart';
 
 class EventDetails extends StatefulWidget {
   const EventDetails({super.key});
@@ -23,11 +15,12 @@ class EventDetails extends StatefulWidget {
 
 class _EventDetailsState extends State<EventDetails> {
   late String eventid;
-  String title = "Loading..."; // تعيين قيم مبدئية
+  String title = "Loading...";
   String description = "Loading...";
   String startTime = "Loading...";
   String endTime = "Loading...";
   String requiredNumber = "Loading...";
+  String registerd_user_reg = "loading...";
   String orgId = "";
   bool isLoading = true;
   String eventLocation = "Online";
@@ -57,8 +50,10 @@ class _EventDetailsState extends State<EventDetails> {
               "Start time not found";
           endTime = doc.data()['end_time']?.toDate().toString() ??
               "End time not found";
-          eventLocation =
-              doc.data()['eventLocation'] ?? "Online"; // استرجاع eventLocation
+          eventLocation = doc.data()['eventLocation'] ?? "Online";
+          orgId = doc.data()['orgId'] ?? "";
+          registerd_user_reg = doc.data()['registerd_user_reg']?.toString() ??
+              "Registered users not found";
           isLoading = false;
         });
       } else {
@@ -68,7 +63,9 @@ class _EventDetailsState extends State<EventDetails> {
           requiredNumber = "Event not found";
           startTime = "Event not found";
           endTime = "Event not found";
-          eventLocation = "Event not found"; // تعيين القيمة الافتراضية
+          eventLocation = "Event not found";
+          orgId = "";
+          registerd_user_reg = "Event not found";
           isLoading = false;
         });
       }
@@ -80,7 +77,9 @@ class _EventDetailsState extends State<EventDetails> {
         requiredNumber = "Error fetching event";
         startTime = "Error fetching event";
         endTime = "Error fetching event";
-        eventLocation = "Error fetching event"; // في حالة حدوث خطأ
+        eventLocation = "Error fetching event";
+        orgId = "";
+        registerd_user_reg = "Error fetching event";
         isLoading = false;
       });
     }
@@ -111,7 +110,6 @@ class _EventDetailsState extends State<EventDetails> {
         backgroundColor: Colors.green,
       );
 
-      // الانتقال إلى الصفحة الرئيسية
       Get.to(const controll_home());
     } catch (e) {
       print("Error deleting event: $e");
@@ -124,28 +122,57 @@ class _EventDetailsState extends State<EventDetails> {
     }
   }
 
-  Future<void> saveuser() async {
-    String userId =
-        FirebaseAuth.instance.currentUser!.uid; // معرف المستخدم الحالي
+  Future<void> addUserToEvent(String eventid) async {
+    String userId = FirebaseAuth.instance.currentUser!.uid;
 
     try {
-      // جلب بيانات المستخدم الحالي
-      DocumentSnapshot userDoc = await FirebaseFirestore.instance
-          .collection('Users') // مجموعة المستخدمين
-          .doc(userId)
-          .get();
+      // المرجع إلى الحدث
+      final eventRef =
+          FirebaseFirestore.instance.collection('events').doc(eventid);
 
-      if (userDoc.exists) {
-        Map<String, dynamic>? userData =
-            userDoc.data() as Map<String, dynamic>?;
+      // تنفيذ التحديث
+      await FirebaseFirestore.instance.runTransaction((transaction) async {
+        // قراءة الوثيقة الحالية
+        final snapshot = await transaction.get(eventRef);
 
-        print("User saved successfully.");
-      } else {
-        print("User not found.");
-      }
+        if (!snapshot.exists) {
+          throw Exception("Event does not exist!");
+        }
+
+        // الحصول على البيانات الحالية
+        final data = snapshot.data() as Map<String, dynamic>;
+        final List<String> registeredUsers =
+            List<String>.from(data['registered_users_list'] ?? []);
+
+        // التحقق إذا كان المستخدم موجود بالفعل
+        if (registeredUsers.contains(userId)) {
+          throw Exception("User already registered in this event.");
+        }
+
+        // إضافة userId إلى القائمة
+        registeredUsers.add(userId);
+
+        // تحديث الوثيقة
+        transaction.update(eventRef, {
+          'registered_users_list': registeredUsers,
+          'registerd_user_reg': registeredUsers.length, // تحديث العدد
+        });
+      });
+
+      Get.snackbar(
+        'Success',
+        'You have successfully registered for the event.',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.green,
+      );
     } catch (e) {
-      print("Error saving user: $e");
-      rethrow; // لإظهار الخطأ عند حدوث مشكلة
+      print("Error adding user to event: $e");
+      Get.snackbar(
+        'Error',
+        'Could not register for the event.',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+      );
     }
   }
 
@@ -247,7 +274,6 @@ class _EventDetailsState extends State<EventDetails> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    // وصف الحدث
                     isLoading
                         ? const CircularProgressIndicator()
                         : Column(
@@ -307,9 +333,9 @@ class _EventDetailsState extends State<EventDetails> {
                             CircleAvatar(
                               radius: 25,
                               backgroundColor: Colors.grey[300],
-                              child: const Text(
-                                '15',
-                                style: TextStyle(
+                              child: Text(
+                                registerd_user_reg,
+                                style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 18,
                                 ),
@@ -337,7 +363,9 @@ class _EventDetailsState extends State<EventDetails> {
                             onPressed: () async {
                               String userId1 =
                                   FirebaseAuth.instance.currentUser!.uid;
+
                               try {
+                                // البحث عن الوثيقة ضمن مجموعة المستخدم الحالية
                                 var eventSnapshot = await FirebaseFirestore
                                     .instance
                                     .collection('Users')
@@ -354,6 +382,7 @@ class _EventDetailsState extends State<EventDetails> {
                                     backgroundColor: Colors.red,
                                   );
                                 } else {
+                                  // تسجيل المستخدم في حدث جديد
                                   await FirebaseFirestore.instance
                                       .collection('Users')
                                       .doc(userId1)
@@ -367,6 +396,7 @@ class _EventDetailsState extends State<EventDetails> {
                                     'eventId': eventid,
                                     'userId': userId1,
                                     'joinedAt': FieldValue.serverTimestamp(),
+                                    'orgId': orgId,
                                   });
 
                                   Get.snackbar(
@@ -375,9 +405,35 @@ class _EventDetailsState extends State<EventDetails> {
                                     snackPosition: SnackPosition.BOTTOM,
                                     backgroundColor: Colors.green,
                                   );
+                                  Get.to(const controll_home());
+
+                                  // تحديث كل المستندات التي تحتوي على نفس eventid
+                                  final querySnapshot = await FirebaseFirestore
+                                      .instance
+                                      .collection(
+                                          'events') // تعديل حسب هيكل قاعدة البيانات
+                                      .where('eventid', isEqualTo: eventid)
+                                      .get();
+
+                                  if (querySnapshot.docs.isNotEmpty) {
+                                    for (var doc in querySnapshot.docs) {
+                                      await doc.reference.update({
+                                        'registerd_user_reg':
+                                            (doc.data()['registerd_user_reg'] ??
+                                                    0) +
+                                                1,
+                                        'registered_users_list':
+                                            FieldValue.arrayUnion([userId1]),
+                                      });
+                                    }
+                                  } else {
+                                    print(
+                                        "No documents found with eventid equal to $eventid");
+                                  }
                                 }
-                              } catch (e) {
+                              } catch (e, stackTrace) {
                                 print("Error saving event: $e");
+                                print("Stack Trace: $stackTrace");
                                 Get.snackbar(
                                   'Error',
                                   'There was an error joining the event',
@@ -385,8 +441,6 @@ class _EventDetailsState extends State<EventDetails> {
                                   backgroundColor: Colors.red,
                                 );
                               }
-                              // الانتقال إلى الصفحة الرئيسية
-                              Get.to(const controll_home());
                             },
                             child: const Text("Add"),
                           ),
@@ -403,7 +457,6 @@ class _EventDetailsState extends State<EventDetails> {
   }
 }
 
-//
 class BackgroundPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {

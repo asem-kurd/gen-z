@@ -22,7 +22,7 @@ class HomeViewModel extends GetxController {
   get navigatorValue => _navigatorValue;
 
   Widget currentScreen = Home();
-  Widget currentScreen2 = AddEvent();
+  Widget currentScreen2 = const AddEvent();
   Widget currentScreen3 = Admin();
 
   void changeSelectedValue(int selectedValue) {
@@ -32,13 +32,13 @@ class HomeViewModel extends GetxController {
         currentScreen = Home(); // تأكد من أن هذه الشاشة موجودة
         break;
       case 1:
-        currentScreen = const EventsScreen();
+        currentScreen = FilterEventsScreen();
         break;
       case 2:
-        currentScreen = DisplayOrg();
+        currentScreen = DisplayOrg_user();
         break;
       case 3:
-        currentScreen =  ProfileScreen();
+        currentScreen = const ProfileScreen();
         break;
       default:
         currentScreen = Home();
@@ -54,20 +54,16 @@ class HomeViewModel extends GetxController {
 
     switch (selectedValue2) {
       case 0:
-        currentScreen2 = AddEvent();
+        currentScreen2 = const AddEvent();
         break;
       case 1:
         currentScreen2 = DisplayOrg_user();
         break;
       case 2:
-        if (userId != null) {
-          currentScreen2 = OrgProfile(userId: userId);
-        } else {
-          Get.snackbar("Error", "User ID is null");
-        }
-        break;
+        currentScreen2 = OrgProfile(userId: userId!);
+              break;
       default:
-        currentScreen2 = AddEvent();
+        currentScreen2 = const AddEvent();
     }
     update();
     print(currentScreen2);

@@ -162,6 +162,16 @@ class _Smartorg extends State<Smartorg> {
                     ),
                   ),
                   Positioned(
+                    top: screenHeight * 0.05,
+                    left: 20,
+                    child: IconButton(
+                      icon: const Icon(Icons.arrow_back),
+                      onPressed: () {
+                        Get.back();
+                      },
+                    ),
+                  ),
+                  Positioned(
                     top: screenHeight * 0.25,
                     left: 20,
                     child: isLoading

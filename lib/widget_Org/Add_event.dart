@@ -8,57 +8,59 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 
-class AddEvent extends StatelessWidget {
+class AddEvent extends StatefulWidget {
+  const AddEvent({super.key});
+
+  @override
+  State<AddEvent> createState() => _AddEventState();
+}
+
+class _AddEventState extends State<AddEvent> {
   final RxString selectedValue = 'Help'.obs;
+
   late String event_type, upload_image;
+
   late String title = titleController.text;
+
   late String description = descriptionController.text;
+
   late String eventlocation = eventloc.text;
+
   late Timestamp end_time, start_time;
+
   late int required_number;
+
   late GeoPoint Latitude;
+
   late List<String> image_url;
-  final ValueNotifier<int?> requiredNumber =
-      ValueNotifier<int?>(null); // State management for required number
+
+  late String link;
+
+  final ValueNotifier<int?> requiredNumber = ValueNotifier<int?>(null);
+  // State management for required number
+  late String linkmeet = LinkController.text;
 
   // Controllers for text fields
   late TextEditingController titleController = TextEditingController();
+
   late TextEditingController descriptionController = TextEditingController();
+
   late TextEditingController eventloc = TextEditingController();
+
   // Placeholder for selected dates
   final ValueNotifier<DateTime?> startDate = ValueNotifier<DateTime?>(null);
+
   final ValueNotifier<DateTime?> endDate = ValueNotifier<DateTime?>(null);
+
   ValueNotifier<String?> selectedLocation = ValueNotifier(null);
 
-  AddEvent({super.key});
+  final TextEditingController LinkController = TextEditingController();
+
+  bool isEventLocFilled = false;
+
+  bool isEventLinkFilled = false;
 
   // دالة لحفظ البيانات في Firestore
-  // Future<void> saveData(DateTime selectedDate, BuildContext context) async {
-  //   try {
-  //     // إضافة الحدث إلى Firestore
-  //     await FirebaseFirestore.instance.collection('events').add({
-  //       'start_time': Timestamp.fromDate(selectedDate),
-  //       'created_at': Timestamp.now(),
-  //     });
-
-  //     // تحقق إذا كان الـ context لا يزال صالحًا (مؤشر أن الـ widget لا يزال في الشجرة)
-  //     if (context.mounted) {
-  //       // عرض رسالة نجاح
-  //       ScaffoldMessenger.of(context).showSnackBar(
-  //         SnackBar(content: Text('Data saved successfully!')),
-  //       );
-  //     }
-  //   } catch (e) {
-  //     // تحقق إذا كان الـ context لا يزال صالحًا
-  //     if (context.mounted) {
-  //       // عرض رسالة خطأ في حالة حدوث مشكلة
-  //       ScaffoldMessenger.of(context).showSnackBar(
-  //         SnackBar(content: Text('Failed to save data: $e')),
-  //       );
-  //     }
-  //   }
-  // }
-
   Future<DateTime?> _pickDate(
       BuildContext context, ValueNotifier<DateTime?> notifier) async {
     return await showDatePicker(
@@ -161,7 +163,51 @@ class AddEvent extends StatelessWidget {
                         .id;
 
                     if (orgDoc.exists) {
-                      // إنشاء حدث افتراضي وربطه بالمنظمة
+                      // التحقق من صحة المتغيرات قبل إنشاء الحدث
+                      if (eventlocation.isEmpty &&
+                          LinkController.text.isEmpty) {
+                        Get.snackbar(
+                          'Error',
+                          'Either an event location or a meeting link must be provided.',
+                          snackPosition: SnackPosition.BOTTOM,
+                          backgroundColor: Colors.red,
+                          colorText: Colors.white,
+                        );
+                        return;
+                      }
+
+                      // التحقق من صحة eventlocation (رابط Google Maps)
+                      if (eventlocation.isNotEmpty) {
+                        final locationRegex = RegExp(
+                            r'^(https?:\/\/)?(www\.)?(google\.[a-z]+\/maps\/(place|dir)\/|maps\.app\.goo\.gl\/).*');
+
+                        if (!locationRegex.hasMatch(eventlocation)) {
+                          Get.snackbar(
+                            'Error',
+                            'Invalid Google Maps link for the event location.',
+                            snackPosition: SnackPosition.BOTTOM,
+                            backgroundColor: Colors.red,
+                            colorText: Colors.white,
+                          );
+                          return;
+                        }
+                      }
+
+                      // التحقق من صحة link (رابط Google Meet أو Teams أو Zoom)
+                      if (LinkController.text.isNotEmpty) {
+                        final linkRegex = RegExp(
+                            r'^(https?:\/\/)?(www\.)?(meet\.google\.com\/[a-zA-Z0-9\-]+|teams\.microsoft\.com\/.*|zoom\.us\/j\/[0-9]+).*$');
+                        if (!linkRegex.hasMatch(LinkController.text)) {
+                          Get.snackbar(
+                            'Error',
+                            'Invalid meeting link. Only Google Meet, Teams, or Zoom links are allowed.',
+                            snackPosition: SnackPosition.BOTTOM,
+                            backgroundColor: Colors.red,
+                            colorText: Colors.white,
+                          );
+                          return;
+                        }
+                      }
                       EventModel defaultEvent = EventModel(
                         type_event: selectedValue.value,
                         eventid: eventid,
@@ -177,6 +223,7 @@ class AddEvent extends StatelessWidget {
                             orgDoc['phone'], // جلب رقم الهاتف من بيانات المنظمة
                         upload_image: '', // رابط الصورة المرفقة مع الحدث
                         eventLocation: eventlocation,
+                        link: LinkController.text,
                       );
 
                       DocumentReference eventDoc = await FirebaseFirestore
@@ -267,7 +314,7 @@ class AddEvent extends StatelessWidget {
                       color: Colors.grey,
                     ),
                     onPressed: () {
-                      titleController.clear(); // Clear the text field
+                      titleController.clear();
                     },
                   ),
                   border: InputBorder.none, // Remove default border
@@ -441,73 +488,110 @@ class AddEvent extends StatelessWidget {
                 }
               },
             ),
-            Container(
-                padding: const EdgeInsets.only(left: 10, right: 10),
-                child: TextFormField(
-                  controller: eventloc,
-                  decoration: InputDecoration(
-                    hintText: 'location',
-                    hintStyle: const TextStyle(
-                        fontStyle: FontStyle.italic,
-                        color: Color(0xFF474448),
-                        fontWeight: FontWeight.bold),
-                    prefixIcon: const Icon(Icons.location_off),
-                    filled: true,
-                    fillColor: Colors.white10,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                  onSaved: (value) {
-                    eventlocation = value!;
-                  },
-                )),
+
             Container(
               padding: const EdgeInsets.only(left: 10, right: 10),
-              child: Obx(
-                () => DropdownButton<String>(
-                  value: selectedValue.value, // القيمة المختارة الحالية
-                  hint: const Text('Type Of Event'), // نص الإشارة
-                  isExpanded: true, // توسيع القائمة
-                  dropdownColor: Colors.white, // لون الخلفية
-                  style: const TextStyle(color: Colors.black), // تنسيق النص
-                  underline: const Divider(
-                    height: 6,
-                    color: Color(0xFFaeaab0), // خط أزرق تحت القائمة
+              child: TextFormField(
+                controller: eventloc,
+                decoration: InputDecoration(
+                  hintText: 'Location',
+                  hintStyle: TextStyle(
+                    fontStyle: FontStyle.italic,
+                    color: isEventLinkFilled
+                        ? Colors.grey
+                        : const Color(0xFF474448), // تغيير اللون
+                    fontWeight: FontWeight.bold,
                   ),
-
-                  items: const [
-                    DropdownMenuItem<String>(
-                      value: 'Help',
-                      child: Text('Help'),
-                    ),
-                    DropdownMenuItem<String>(
-                      value: 'Education',
-                      child: Text('Education'),
-                    ),
-                    DropdownMenuItem<String>(
-                      value: 'Technology',
-                      child: Text('Technology'),
-                    ),
-                    DropdownMenuItem<String>(
-                      value: 'Health',
-                      child: Text('Health'),
-                    ),
-                    DropdownMenuItem<String>(
-                      value: 'Sports',
-                      child: Text('Sports'),
-                    ),
-                    DropdownMenuItem<String>(
-                      value: 'Entertainment',
-                      child: Text('Entertainment'),
-                    ),
-                  ],
-                  onChanged: (value) {
-                    selectedValue.value = value!;
-                    print(selectedValue.value);
-                  },
+                  prefixIcon: Icon(
+                    Icons.location_off,
+                    color: isEventLinkFilled
+                        ? Colors.grey
+                        : const Color(0xFF474448), // تغيير لون الأيقونة
+                  ),
+                  filled: true,
+                  fillColor: isEventLinkFilled
+                      ? Colors.grey.shade300
+                      : Colors.white10, // تغيير لون الخلفية
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide: BorderSide.none,
+                  ),
                 ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a location link';
+                  }
+                  final regex = RegExp(
+                      r'^(https?:\/\/)?(www\.)?google\.[a-z]+\/maps\/(place|dir)\/.*$');
+                  if (!regex.hasMatch(value)) {
+                    return 'Please enter a valid Google Maps link';
+                  }
+                  return null;
+                },
+                onChanged: (value) {
+                  setState(() {
+                    isEventLocFilled = value.isNotEmpty;
+                  });
+                  eventlocation = value;
+                },
+                onSaved: (value) {
+                  eventlocation = value.toString();
+                },
+                enabled:
+                    !isEventLinkFilled, // تعطيل إذا كان الحقل الآخر ممتلئًا
+              ),
+            ),
+            const SizedBox(height: 20),
+            Container(
+              padding: const EdgeInsets.only(left: 10, right: 10),
+              child: TextFormField(
+                controller: LinkController,
+                decoration: InputDecoration(
+                  hintText: 'Enter meeting link',
+                  hintStyle: TextStyle(
+                    fontStyle: FontStyle.italic,
+                    color: isEventLocFilled
+                        ? Colors.grey
+                        : const Color(0xFF474448), // تغيير اللون
+                    fontWeight: FontWeight.bold,
+                  ),
+                  prefixIcon: Icon(
+                    Icons.link,
+                    color: isEventLocFilled
+                        ? Colors.grey
+                        : const Color(0xFF474448), // تغيير لون الأيقونة
+                  ),
+                  filled: true,
+                  fillColor: isEventLocFilled
+                      ? Colors.grey.shade300
+                      : Colors.white10, // تغيير لون الخلفية
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a meeting link';
+                  }
+                  // التحقق من صحة الروابط المقبولة
+                  final regex = RegExp(
+                      r'^(https?:\/\/)?(www\.)?(google\.[a-z]+\/maps\/(place|dir)\/.*|meet\.google\.com\/[a-zA-Z0-9\-]+|teams\.microsoft\.com\/.*|zoom\.us\/j\/[0-9]+).*$');
+                  if (!regex.hasMatch(value)) {
+                    return 'Please enter a valid link (Google Maps, Google Meet, Teams, or Zoom)';
+                  }
+                  return null;
+                },
+                onChanged: (value) {
+                  setState(() {
+                    isEventLinkFilled = value.isNotEmpty;
+                  });
+                  link = value;
+                },
+                onSaved: (value) {
+                  link = value.toString();
+                },
+                enabled: !isEventLocFilled, // تعطيل إذا كان الحقل الآخر ممتلئًا
               ),
             ),
 

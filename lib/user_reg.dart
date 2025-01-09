@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_99/Getx/AuthviewModel.dart';
 import 'package:flutter_application_99/Loginuser.dart';
+import 'package:flutter_application_99/Repetitions/gradent%20circle.dart'
+    as repetition;
 import 'package:flutter_application_99/components/Reg_User_List.dart';
 import 'package:flutter_application_99/components/Reg_user_Textfiled.dart';
 import 'package:flutter_application_99/reg_event_user.dart';
@@ -28,7 +30,7 @@ class UserReg extends GetView<Authviewmodel> {
           children: [
             CustomPaint(
               size: MediaQuery.of(context).size,
-              painter: BackgroundPainter(),
+              painter: repetition.BackgroundPainter(),
             ),
             SingleChildScrollView(
               child: Padding(

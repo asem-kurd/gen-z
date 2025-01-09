@@ -34,8 +34,10 @@ class CreateUser extends StatelessWidget {
     var width = MediaQuery.of(context).size.width;
 
     return Form(
+      
       key: formKey,
       child: Scaffold(
+        
         body: Stack(
           children: [
             CustomPaint(
@@ -95,7 +97,6 @@ class CreateUser extends StatelessWidget {
                       margin: EdgeInsets.symmetric(horizontal: height * 0.06),
                       child: Obx(
                         () => TextFormField(
-                          style: const TextStyle(color: Colors.black),
                           decoration: InputDecoration(
                             hintText: 'Password',
                             hintStyle: const TextStyle(

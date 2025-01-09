@@ -84,22 +84,23 @@ class Admin extends StatelessWidget {
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(height: 8),
                                   Row(
                                     children: [
                                       const Icon(Icons.phone, size: 16),
                                       const SizedBox(width: 4),
-                                      Text(
-                                        org.phone.toDouble().toString(),
-                                        style: const TextStyle(
-                                            color: Color(0xff7c142f)),
-                                        overflow: TextOverflow.ellipsis,
+                                      Flexible(
+                                        child: Text(
+                                          org.phone.toDouble().toString(),
+                                          style: const TextStyle(
+                                              color: Color(0xff7c142f)),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
                                       ),
                                       InkWell(
                                         onTap: () {
                                           var eventId = org.userid;
                                           print(eventId);
-                                          Get.to(MemberScreen(),
+                                          Get.to(const MemberScreen(),
                                               arguments: eventId);
                                         },
                                         child: Padding(
@@ -107,7 +108,7 @@ class Admin extends StatelessWidget {
                                               left: screenWidth * 0.1),
                                           child: Container(
                                             padding: const EdgeInsets.symmetric(
-                                                horizontal: 8, vertical: 4),
+                                                horizontal: 16, vertical: 8),
                                             decoration: BoxDecoration(
                                               border: Border.all(
                                                   color:
@@ -117,13 +118,17 @@ class Admin extends StatelessWidget {
                                               color: const Color(0xff3d4349),
                                             ),
                                             child: const Text(
-                                              "Delete",
+                                              "Delete  Event",
                                               style: TextStyle(
-                                                  color: Colors.white),
+                                                fontSize: 12,
+                                                color: Colors.white,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                              maxLines: 1,
                                             ),
                                           ),
                                         ),
-                                      ),
+                                      )
                                     ],
                                   ),
                                 ],

@@ -10,8 +10,7 @@ class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Colors.transparent, // اجعل الخلفية شفافة
-      backgroundColor: Theme.of(context).colorScheme.primary,
+      backgroundColor: Colors.transparent, // اجعل الخلفية شفافة
       body: Stack(
         children: [
           // طبقة الخلفية المتدرجة مع الدائرة

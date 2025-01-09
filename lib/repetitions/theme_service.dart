@@ -43,6 +43,7 @@ class ThemeService {
       bodyMedium: TextStyle(color: Colors.white), // Body text
     ),
   );
+
   /// ********************DARK THEME************************************
 
   final _getStorage = GetStorage();

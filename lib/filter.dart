@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 import 'package:path/path.dart';
 
 class AppColors {
-  static final textColor = Theme.of(Get.context!).colorScheme.primary;
-  static final buttonBg = Theme.of(Get.context!).colorScheme.surface;
+  static final textColor = Theme.of(Get.context!).colorScheme.surface;
+  static const buttonBg = Color.fromARGB(255, 114, 110, 117);
   static const shadowColor = Color(0xffB4B3B5);
 
   // Filter button colors

@@ -19,6 +19,7 @@ class EventController extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   var UserData = <UserModel>[].obs;
   var eventIds = <EventModel>[].obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -55,7 +56,6 @@ class EventController extends GetxController {
     }
   }
 
-  // جلب البيانات الخاصة بالأحداث
   void fetchEvents() async {
     try {
       isLoading.value = true; // تأكيد أنك في وضع التحميل
@@ -148,4 +148,123 @@ class EventController extends GetxController {
     }
   }
 
- }
+  Future<void> deleteEventFromAllUsers(String eventId) async {
+    try {
+      // احصل على جميع المستخدمين
+      final userSnapshot =
+          await FirebaseFirestore.instance.collection('Users').get();
+
+      for (var userDoc in userSnapshot.docs) {
+        final userId = userDoc.id;
+
+        // البحث عن الأحداث المرتبطة بـ eventId
+        final eventSnapshot = await FirebaseFirestore.instance
+            .collection('Users')
+            .doc(userId)
+            .collection('events')
+            .where('eventId', isEqualTo: eventId) // استخدم "eventId" كاسم الحقل
+            .get();
+
+        // تحقق إذا تم العثور على مستندات
+        if (eventSnapshot.docs.isNotEmpty) {
+          for (var eventDoc in eventSnapshot.docs) {
+            print(
+                'Deleting event: ${eventDoc.id} for user: $userId'); // طباعة لمعرفة ماذا يحدث
+            await FirebaseFirestore.instance
+                .collection('Users')
+                .doc(userId)
+                .collection('events')
+                .doc(eventDoc.id)
+                .delete(); // حذف المستند
+          }
+        } else {
+          print('No events found for eventId: $eventId in user: $userId');
+        }
+      }
+
+      print('Event deleted from all users successfully');
+    } catch (e) {
+      print('Error deleting event from all users: $e');
+    }
+  }
+
+  void fetchAndDeleteEventsForUser(String userId) async {
+    try {
+      isLoading.value = true;
+
+      var snapshot = await FirebaseFirestore.instance
+          .collection('events')
+          .where('userId', isEqualTo: userId)
+          .get();
+
+      print('Found ${snapshot.docs.length} events to delete.');
+
+      // Delete each event from both collections
+      for (var doc in snapshot.docs) {
+        try {
+          String eventId = doc.id;
+
+          // Delete event from 'events' collection
+          await FirebaseFirestore.instance
+              .collection('events')
+              .doc(eventId)
+              .delete();
+          print('Event with ID $eventId has been deleted.');
+
+          // Delete event from 'Users/{userId}/events' collection
+          await FirebaseFirestore.instance
+              .collection('Users')
+              .doc(userId)
+              .collection('events')
+              .doc(eventId)
+              .delete();
+          print('Event with ID $eventId deleted from User\'s events.');
+        } catch (e) {
+          print('Error deleting event ${doc.id}: $e');
+        }
+      }
+    } catch (e) {
+      print("Error fetching and deleting events for user: $e");
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> deleteEventFromAllUsers2(String eventId) async {
+    try {
+      // جلب جميع المستخدمين
+      var usersSnapshot =
+          await FirebaseFirestore.instance.collection('Users').get();
+
+      // التنقل عبر كل مستخدم
+      for (var userDoc in usersSnapshot.docs) {
+        String userId = userDoc.id; // معرف المستخدم
+
+        // الوصول إلى مجموعة "events" داخل المستخدم
+        var userEventsSnapshot = await FirebaseFirestore.instance
+            .collection('Users')
+            .doc(userId)
+            .collection('events')
+            .where(FieldPath.documentId,
+                isEqualTo: eventId) // البحث عن المستند باستخدام eventId
+            .get();
+
+        // إذا وجد المستند، قم بحذفه
+        for (var eventDoc in userEventsSnapshot.docs) {
+          await FirebaseFirestore.instance
+              .collection('Users')
+              .doc(userId)
+              .collection('events')
+              .doc(eventDoc.id)
+              .delete();
+
+          print("Deleted event $eventId for user $userId");
+        }
+      }
+
+      print("Event $eventId has been deleted for all users.");
+    } catch (e) {
+      print("Error deleting event $eventId for all users: $e");
+    }
+  }
+}

@@ -8,11 +8,10 @@ import 'package:flutter_application_99/Getx/Binding.dart';
 import 'package:flutter_application_99/Loginuser.dart';
 import 'package:flutter_application_99/Repetitions/theme_service.dart';
 import 'package:flutter_application_99/admin/DisplayOrg_admin.dart';
+import 'package:flutter_application_99/admin/admin.dart';
 import 'package:flutter_application_99/admin/controll_admin.dart';
 import 'package:flutter_application_99/admin/delete_member.dart';
 import 'package:flutter_application_99/controll_home.dart';
-import 'package:flutter_application_99/theme/light_theme.dart';
-import 'package:flutter_application_99/theme/dark_theme.dart';
 import 'package:flutter_application_99/widget_Org/control_home.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
@@ -88,8 +87,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Flutter Demo',
-      theme: lightTheme,
-      darkTheme: darkTheme,
+      theme: ThemeService().lightTheme,
+      darkTheme: ThemeService().darkTheme,
       themeMode: ThemeService().getThemeMode(),
       debugShowCheckedModeBanner: false,
       initialBinding: InitialBinding(),
@@ -124,8 +123,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/CreateUser', page: () => CreateUser()),
         GetPage(name: '/controll_home', page: () => const controll_home()),
         GetPage(name: '/ControllHomeOrg', page: () => const ControllHomeOrg()),
-        GetPage(
-            name: '/ControllHomeadmin', page: () => const ControllHomeadmin()),
+        GetPage(name: '/ControllHomeadmin', page: () => const ControllHomeadmin()),
       ],
     );
   }
