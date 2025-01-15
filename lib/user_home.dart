@@ -265,23 +265,23 @@ class Home extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Divider(
-                  thickness: 1,
-                  color: Colors.grey,
-                ),
+                // const Divider(
+                //   thickness: 1,
+                //   color: Colors.grey,
+                // ),
                 const SizedBox(
                   height: 30,
                 ),
-                ListTile(
-                  leading: const Icon(
-                    Icons.filter_alt,
-                  ),
-                  title: const Text('Filter events',
-                      style: TextStyle(fontSize: 16)),
-                  onTap: () {
-                    Get.to(() => FilterEventsScreen()); // Close the drawer
-                  },
-                ),
+                // ListTile(
+                //   leading: const Icon(
+                //     Icons.filter_alt,
+                //   ),
+                //   title: const Text('Filter events',
+                //       style: TextStyle(fontSize: 16)),
+                //   onTap: () {
+                //     Get.to(() => FilterEventsScreen()); // Close the drawer
+                //   },
+                // ),
                 const Divider(thickness: 1, color: Colors.grey),
                 ListTile(
                   leading: const Icon(

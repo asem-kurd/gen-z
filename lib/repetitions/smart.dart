@@ -7,6 +7,7 @@ import 'package:flutter_application_99/service/event.dart';
 import 'package:flutter_application_99/taple_firebase/user_taple.dart';
 import 'package:flutter_application_99/view_model/Event_model.dart';
 import 'package:flutter_application_99/widget_Org/control_home.dart';
+import 'package:flutter_application_99/widget_Org/updata.dart';
 import 'package:get/get.dart';
 import 'dart:ui' as ui;
 
@@ -194,16 +195,6 @@ class _Smartorg extends State<Smartorg> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 16),
-                    isLoading
-                        ? const CircularProgressIndicator()
-                        : const Text(
-                            'Participation hours: 4',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          ),
                     const SizedBox(height: 20),
                     Container(
                       padding: const EdgeInsets.all(16.0),
@@ -311,36 +302,76 @@ class _Smartorg extends State<Smartorg> {
                     ),
                     const SizedBox(height: 75),
                     if (!isLoading)
-                      Align(
-                        alignment: Alignment.bottomRight,
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: ElevatedButton(
-                            onPressed: () {
-                              deleteEventByEventId(eventid);
-                              Get.back();
-                            },
-                            style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.zero,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(40),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Get.to(Updataevent(), arguments: eventid);
+                                print(eventid);
+                              },
+                              style: ElevatedButton.styleFrom(
+                                padding: EdgeInsets.zero,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(40),
+                                ),
+                                splashFactory: NoSplash.splashFactory,
+                                shadowColor: Colors.transparent,
+                                elevation: 0,
+                                backgroundColor: Color(0xFFb1b3b5),
                               ),
-                              splashFactory: NoSplash.splashFactory,
-                              shadowColor: Colors.transparent,
-                              elevation: 0,
-                              backgroundColor: Colors.transparent,
-                            ),
-                            child: Container(
-                              constraints: const BoxConstraints(
-                                  minWidth: 150, minHeight: 50),
-                              alignment: Alignment.center,
-                              child: const Text(
-                                "Delete Event",
-                                style: TextStyle(color: Colors.black),
+                              child: Container(
+                                constraints: const BoxConstraints(
+                                    minWidth: 140, minHeight: 40),
+                                alignment: Alignment.center,
+                                child: const Text(
+                                  "Updata Event",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 17,
+                                    fontFamily:
+                                        'Arial', // تم تصحيح اسم عائلة الخط
+                                  ),
+                                ),
                               ),
                             ),
                           ),
-                        ),
+                          Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                deleteEventByEventId(eventid);
+                                Get.back();
+                              },
+                              style: ElevatedButton.styleFrom(
+                                padding: EdgeInsets.zero,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(40),
+                                ),
+                                splashFactory: NoSplash.splashFactory,
+                                shadowColor: Colors.transparent,
+                                elevation: 0,
+                                backgroundColor: Color(0xFFb1b3b5),
+                              ),
+                              child: Container(
+                                constraints: const BoxConstraints(
+                                    minWidth: 130, minHeight: 40),
+                                alignment: Alignment.center,
+                                child: const Text(
+                                  "Delete Event",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 17,
+                                    fontFamily:
+                                        'Arial', // تم تصحيح اسم عائلة الخط
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                   ],
                 ),

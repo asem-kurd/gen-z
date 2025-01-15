@@ -32,12 +32,9 @@ class CreateUser extends StatelessWidget {
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
-
     return Form(
-      
       key: formKey,
       child: Scaffold(
-        
         body: Stack(
           children: [
             CustomPaint(

@@ -1,13 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_99/Getx/EventController.dart';
-import 'package:flutter_application_99/Repetitions/smart.dart';
-import 'package:flutter_application_99/Repetitions/theme_service.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:location/location.dart' as loc; // اسم مستعار للمكتبة Location
+
+import 'package:url_launcher/url_launcher.dart';
 
 class OrgProfileuser extends StatefulWidget {
   final String userId;
+
   const OrgProfileuser({super.key, required this.userId});
 
   @override
@@ -16,15 +19,87 @@ class OrgProfileuser extends StatefulWidget {
 
 class _OrgProfileState extends State<OrgProfileuser> {
   final EventController controller = Get.put(EventController());
+  late final String locationUrl;
+  String provinceName = 'جاري تحديد الموقع...';
+
   @override
   void initState() {
     super.initState();
     controller.fetchEventsForUser(widget.userId);
     controller.fetchOrganizationData(widget.userId);
+    controller.fetchTodayData();
+    fetchLocationUrl();
+    //   fetchLocationData();
+  }
+
+  void fetchLocationData() async {
+    try {
+      loc.Location location = loc
+          .Location(); // استخدم loc.Location بدلاً من Location لتجنب الالتباس
+
+      // التحقق من تمكين الخدمة
+      bool serviceEnabled = await location.serviceEnabled();
+      if (!serviceEnabled) {
+        serviceEnabled = await location.requestService();
+        if (!serviceEnabled) {
+          print('خدمة الموقع غير مفعلة');
+          return;
+        }
+      }
+
+      // طلب الإذن للوصول إلى الموقع
+      loc.PermissionStatus permissionGranted = await location.hasPermission();
+      if (permissionGranted == loc.PermissionStatus.denied) {
+        permissionGranted = await location.requestPermission();
+        if (permissionGranted != loc.PermissionStatus.granted) {
+          print('الإذن غير ممنوح');
+          return;
+        }
+      }
+
+      // الحصول على الإحداثيات
+      loc.LocationData locationData = await location.getLocation();
+      if (locationData.latitude == null || locationData.longitude == null) {
+        print('تعذر الحصول على الموقع');
+        return;
+      }
+
+      // تحويل الإحداثيات إلى عنوان باستخدام geocoding
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+        locationData.latitude!,
+        locationData.longitude!,
+      );
+
+      // استخراج اسم المحافظة
+      setState(() {
+        provinceName = placemarks[0].administrativeArea ?? 'غير معروف';
+        locationUrl =
+            'https://www.google.com/maps?q=${locationData.latitude},${locationData.longitude}';
+      });
+    } catch (e) {
+      print('خطأ في جلب البيانات: $e');
+    }
+  }
+
+  void openLocation(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'تعذر فتح رابط الموقع';
+    }
+  }
+
+  void fetchLocationUrl() async {
+    // هنا يمكن أن يكون مصدر الرابط (Firebase أو أي مصدر آخر)
+    locationUrl = 'https://maps.app.goo.gl/qzvDjCAiAw1bx5Pq6'; // تخصيص القيمة
+    setState(() {}); // تحديث الواجهة
   }
 
   @override
   Widget build(BuildContext context) {
+    final linkRegex = RegExp(
+      r'^(https?:\/\/)?(www\.)?(meet\.google\.com\/[a-zA-Z0-9\-]+|teams\.microsoft\.com\/.*|zoom\.us\/j\/[0-9]+).*$',
+    );
     final double screenHeight = MediaQuery.of(context).size.height;
     final double screenWidth = MediaQuery.of(context).size.width;
 
@@ -64,16 +139,6 @@ class _OrgProfileState extends State<OrgProfileuser> {
                               color: Color(0xff575a60)),
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(
-                            top: screenHeight * 0.05,
-                            right: screenWidth * 0.05),
-                        child: InkWell(
-                          onTap: () {},
-                          child: const Icon(Icons.notifications,
-                              color: Color(0xff575a60)),
-                        ),
-                      ),
                     ],
                   ),
                   const SizedBox(height: 5),
@@ -83,8 +148,8 @@ class _OrgProfileState extends State<OrgProfileuser> {
                         padding: EdgeInsets.only(left: screenWidth * 0.05),
                         child: const CircleAvatar(
                           radius: 80,
-                          backgroundImage: AssetImage(
-                              'assets/images/Image/Polygon 1.png'),
+                          backgroundImage:
+                              AssetImage('assets/images/Image/Polygon 1.png'),
                         ),
                       ),
                       Padding(
@@ -114,13 +179,17 @@ class _OrgProfileState extends State<OrgProfileuser> {
                                 ],
                               ),
                             ),
-                            const Padding(
-                              padding: EdgeInsets.only(left: 30),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 30),
                               child: Row(
                                 children: [
-                                  Icon(Icons.location_pin),
-                                  SizedBox(width: 4),
-                                  Text('Ma,an'),
+                                  IconButton(
+                                      icon: const Icon(Icons.location_pin),
+                                      onPressed: () {
+                                        openLocation(locationUrl);
+                                      }),
+                                  const SizedBox(width: 4),
+                                  //    Text(provinceName),
                                 ],
                               ),
                             ),
@@ -134,9 +203,10 @@ class _OrgProfileState extends State<OrgProfileuser> {
                   const SizedBox(height: 10),
                   Obx(() {
                     if (controller.orgData2.isEmpty) {
-                      return const Center(child: Text("No events available"));
+                      return const Center(
+                          child: Text("No events available for today."));
                     }
-                    return ListView.builder(
+                    return ListView.separated(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: controller.orgData2.length,
@@ -159,62 +229,88 @@ class _OrgProfileState extends State<OrgProfileuser> {
                             ],
                           ),
                           child: InkWell(
-                            onTap: () {},
-                            child: Container(
-                              height: screenHeight * 0.15,
-                              width: screenWidth * 0.9,
-                              padding: const EdgeInsets.all(12),
-                              child: Row(
-                                children: [
-                                  const CircleAvatar(
-                                    radius: 45,
-                                    backgroundImage: AssetImage(
-                                        'assets/images/Image/Logo.png'),
-                                  ),
-                                  const SizedBox(width: 20),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.center,
+                            onTap: () {
+                              // اضف هنا الإجراء عند الضغط
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Container(
+                                  height: screenHeight * 0.14,
+                                  width: screenWidth * 0.9,
+                                  padding: const EdgeInsets.all(12),
+                                  child: Row(
                                     children: [
-                                      Text(
-                                        eventorg.title,
-                                        style: const TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          color: Color(0xFF2A2A2A),
+                                      // الصورة داخل دائرة
+                                      const CircleAvatar(
+                                        radius: 45,
+                                        backgroundImage: AssetImage(
+                                            'assets/images/Image/Logo.png'),
+                                      ),
+                                      const SizedBox(width: 20),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            // العنوان
+                                            Text(
+                                              eventorg.title,
+                                              style: const TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                                color: Color(0xFF3d4349),
+                                              ),
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                            const SizedBox(height: 8),
+                                            // التاريخ
+                                            Text(
+                                              "Date: ${DateFormat('dd MMMM').format(eventorg.start_time.toDate())}",
+                                              style: const TextStyle(
+                                                fontSize: 16,
+                                                color: Color(0xFF3d4349),
+                                              ),
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                            const SizedBox(height: 8),
+
+                                            if (linkRegex.hasMatch(eventorg
+                                                    .link ??
+                                                '')) // تحقق من تطابق الرابط مع Regex
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  Image.asset(
+                                                    'assets/images/Image/Pin_light.png',
+                                                    width: 24,
+                                                    height: 24, // حجم الأيقونة
+                                                  ),
+                                                  const SizedBox(width: 8),
+                                                  const Text(
+                                                    "Online",
+                                                    style: TextStyle(
+                                                      fontSize: 16,
+                                                      color: Color(0xFF3d4349),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                          ],
                                         ),
                                       ),
-                                      const SizedBox(height: 8),
-                                      Row(
-                                        children: [
-                                          const CircleAvatar(
-                                            radius: 10,
-                                            backgroundColor: Colors.blue,
-                                            child: Icon(
-                                              Icons.phone,
-                                              color: Colors.white,
-                                              size: 16,
-                                            ),
-                                          ),
-                                          const SizedBox(width: 8),
-                                          Text(
-                                            eventorg.phone.toString(),
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                              color: Color(0xFF78797d),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
                                     ],
-                                  ),
-                                ],
-                              ),
+                                  )),
                             ),
                           ),
                         );
                       },
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(height: 16), // فاصل بين العناصر
                     );
                   }),
                 ],

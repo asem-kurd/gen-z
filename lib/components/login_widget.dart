@@ -12,8 +12,7 @@ class CustomTextField extends StatelessWidget {
   final FormFieldValidator<String>? validator;
   final Function(String?)? onSaved;
 
-  const CustomTextField({
-    super.key,
+  const CustomTextField({super.key, 
     required this.controller,
     required this.hintText,
     this.isPassword = false,
@@ -29,7 +28,6 @@ class CustomTextField extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: screenHeight * 0.06),
       child: TextFormField(
-        style: const TextStyle(color: Colors.black),
         controller: controller,
         obscureText: isPassword && !isVisible, // إخفاء النص إذا كانت كلمة السر
         onSaved: onSaved,

@@ -100,7 +100,6 @@ class DisplayorgAdmin extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.primary,
         body: Container(
           width: double.infinity,
           height: double.infinity,
@@ -136,7 +135,7 @@ class DisplayorgAdmin extends StatelessWidget {
                   'Organisation',
                   style: TextStyle(
                     fontSize: 35,
-                    // color: Color(0xFF78797d),
+                    color: Color(0xFF78797d),
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -146,7 +145,7 @@ class DisplayorgAdmin extends StatelessWidget {
                   padding: const EdgeInsets.all(16.0),
                   child: Obx(() {
                     if (myorg.myorganization.isEmpty) {
-                      return Center(
+                      return const Center(
                         child: Text('No organizations at this time'),
                       );
                     }

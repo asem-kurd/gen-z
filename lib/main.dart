@@ -90,7 +90,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeService().lightTheme,
       darkTheme: ThemeService().darkTheme,
       themeMode: ThemeService().getThemeMode(),
-      debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: false,  
       initialBinding: InitialBinding(),
       home: FutureBuilder<Widget>(
         future: determineUserHome(),

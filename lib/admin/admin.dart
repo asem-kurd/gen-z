@@ -100,7 +100,7 @@ class Admin extends StatelessWidget {
                                         onTap: () {
                                           var eventId = org.userid;
                                           print(eventId);
-                                          Get.to(const MemberScreen(),
+                                          Get.to(MemberScreen(),
                                               arguments: eventId);
                                         },
                                         child: Padding(

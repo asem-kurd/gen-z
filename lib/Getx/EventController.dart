@@ -28,6 +28,32 @@ class EventController extends GetxController {
     fetchUserData();
   }
 
+  void fetchTodayData() async {
+    try {
+      DateTime now = DateTime.now();
+      DateTime startOfDay = DateTime(now.year, now.month, now.day, 0, 0, 0);
+      DateTime endOfDay = DateTime(now.year, now.month, now.day, 23, 59, 59);
+
+      QuerySnapshot snapshot = await FirebaseFirestore.instance
+          .collection('your_collection') // اسم المجموعة
+          .where('start_date',
+              isGreaterThanOrEqualTo: Timestamp.fromDate(startOfDay))
+          .where('start_date',
+              isLessThanOrEqualTo: Timestamp.fromDate(endOfDay))
+          .get();
+
+      for (var doc in snapshot.docs) {
+        final data = doc.data(); // جلب البيانات الخام
+        if (data is Map<String, dynamic>) {
+          // تحقق من نوع البيانات
+          orgData2.add(EventModel.fromJson(data));
+        }
+      }
+    } catch (e) {
+      print("Error fetching today's data: $e");
+    }
+  }
+
   void fetchUserData() async {
     try {
       QuerySnapshot snapshot =

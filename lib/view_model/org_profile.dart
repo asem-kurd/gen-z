@@ -4,7 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_99/Getx/EventController.dart';
 import 'package:flutter_application_99/Repetitions/smart.dart';
 import 'package:flutter_application_99/Repetitions/theme_service.dart';
+import 'package:flutter_application_99/widget_Org/Add_event.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:location/location.dart' as loc; // اسم مستعار للمكتبة Location
 
 class OrgProfile extends StatefulWidget {
   final String userId;
@@ -15,19 +20,89 @@ class OrgProfile extends StatefulWidget {
 }
 
 class _OrgProfileState extends State<OrgProfile> {
+  late final String locationUrl;
+  String provinceName = 'جاري تحديد الموقع...';
+
   final EventController controller = Get.put(EventController());
-
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
   @override
   void initState() {
     super.initState();
     controller.fetchEventsForUser(widget.userId);
     controller.fetchOrganizationData(widget.userId);
+    fetchLocationUrl();
+    controller.fetchTodayData();
+    //   fetchLocationData();
+  }
+
+  void fetchLocationData() async {
+    try {
+      loc.Location location = loc
+          .Location(); // استخدم loc.Location بدلاً من Location لتجنب الالتباس
+
+      // التحقق من تمكين الخدمة
+      bool serviceEnabled = await location.serviceEnabled();
+      if (!serviceEnabled) {
+        serviceEnabled = await location.requestService();
+        if (!serviceEnabled) {
+          print('خدمة الموقع غير مفعلة');
+          return;
+        }
+      }
+
+      // طلب الإذن للوصول إلى الموقع
+      loc.PermissionStatus permissionGranted = await location.hasPermission();
+      if (permissionGranted == loc.PermissionStatus.denied) {
+        permissionGranted = await location.requestPermission();
+        if (permissionGranted != loc.PermissionStatus.granted) {
+          print('الإذن غير ممنوح');
+          return;
+        }
+      }
+
+      // الحصول على الإحداثيات
+      loc.LocationData locationData = await location.getLocation();
+      if (locationData.latitude == null || locationData.longitude == null) {
+        print('تعذر الحصول على الموقع');
+        return;
+      }
+
+      // تحويل الإحداثيات إلى عنوان باستخدام geocoding
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+        locationData.latitude!,
+        locationData.longitude!,
+      );
+
+      // استخراج اسم المحافظة
+      setState(() {
+        provinceName = placemarks[0].administrativeArea ?? 'غير معروف';
+        locationUrl =
+            'https://www.google.com/maps?q=${locationData.latitude},${locationData.longitude}';
+      });
+    } catch (e) {
+      print('خطأ في جلب البيانات: $e');
+    }
+  }
+
+  void fetchLocationUrl() async {
+    // هنا يمكن أن يكون مصدر الرابط (Firebase أو أي مصدر آخر)
+    locationUrl = 'https://maps.app.goo.gl/qzvDjCAiAw1bx5Pq6'; // تخصيص القيمة
+    setState(() {}); // تحديث الواجهة
+  }
+
+  void openLocation(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not open the location URL';
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final linkRegex = RegExp(
+      r'^(https?:\/\/)?(www\.)?(meet\.google\.com\/[a-zA-Z0-9\-]+|teams\.microsoft\.com\/.*|zoom\.us\/j\/[0-9]+).*$',
+    );
     final double screenHeight = MediaQuery.of(context).size.height;
     final double screenWidth = MediaQuery.of(context).size.width;
 
@@ -85,8 +160,8 @@ class _OrgProfileState extends State<OrgProfile> {
                         padding: EdgeInsets.only(left: screenWidth * 0.05),
                         child: const CircleAvatar(
                           radius: 80,
-                          backgroundImage: AssetImage(
-                              'assets/images/Image/Polygon 1.png'),
+                          backgroundImage:
+                              AssetImage('assets/images/Image/Polygon 1.png'),
                         ),
                       ),
                       Padding(
@@ -116,14 +191,13 @@ class _OrgProfileState extends State<OrgProfile> {
                                 ],
                               ),
                             ),
-                            const Padding(
+                            Padding(
                               padding: EdgeInsets.only(left: 30),
-                              child: Row(
-                                children: [
-                                  Icon(Icons.location_pin),
-                                  SizedBox(width: 4),
-                                  Text('Ma,an'),
-                                ],
+                              child: IconButton(
+                                icon: Icon(Icons.location_on),
+                                onPressed: () {
+                                  openLocation(locationUrl);
+                                },
                               ),
                             ),
                           ],
@@ -171,51 +245,69 @@ class _OrgProfileState extends State<OrgProfile> {
                               height: screenHeight * 0.15,
                               width: screenWidth * 0.9,
                               padding: const EdgeInsets.all(12),
-                              child: Row(
+                              child: Stack(
                                 children: [
-                                  const CircleAvatar(
-                                    radius: 45,
-                                    backgroundImage: AssetImage(
-                                        'assets/images/Image/Logo.png'),
-                                  ),
-                                  const SizedBox(width: 20),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.center,
+                                  Row(
                                     children: [
-                                      Text(
-                                        eventorg.title,
-                                        style: const TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          color: Color(0xFF2A2A2A),
+                                      const CircleAvatar(
+                                        radius: 45,
+                                        backgroundImage: AssetImage(
+                                            'assets/images/Image/Logo.png'),
+                                      ),
+                                      const SizedBox(width: 20),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              eventorg.title,
+                                              style: const TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                                color: Color(0xFF2A2A2A),
+                                              ),
+                                            ),
+                                            const SizedBox(height: 8),
+                                            Text(
+                                              "Date: ${DateFormat('dd MMMM').format(eventorg.start_time.toDate())}",
+                                              style: const TextStyle(
+                                                fontSize: 16,
+                                                color: Color(0xFF3d4349),
+                                              ),
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                            const SizedBox(height: 8),
+                                          ],
                                         ),
                                       ),
-                                      const SizedBox(height: 8),
-                                      Row(
+                                    ],
+                                  ),
+                                  if (linkRegex.hasMatch(eventorg.link ?? ''))
+                                    Positioned(
+                                      bottom: 8, // للمحاذاة من الأسفل
+                                      right: 8, // للمحاذاة من اليمين
+                                      child: Row(
                                         children: [
-                                          const CircleAvatar(
-                                            radius: 10,
-                                            backgroundColor: Colors.blue,
-                                            child: Icon(
-                                              Icons.phone,
-                                              color: Colors.white,
-                                              size: 16,
-                                            ),
+                                          Image.asset(
+                                            'assets/images/Image/Pin_light.png',
+                                            width: 24,
+                                            height: 24,
                                           ),
                                           const SizedBox(width: 8),
-                                          Text(
-                                            eventorg.phone.toString(),
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                              color: Color(0xFF78797d),
+                                          const Text(
+                                            "Online",
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              color: Color(0xFF3d4349),
                                             ),
                                           ),
                                         ],
                                       ),
-                                    ],
-                                  ),
+                                    ),
                                 ],
                               ),
                             ),
